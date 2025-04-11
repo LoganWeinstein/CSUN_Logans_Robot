@@ -221,7 +221,7 @@ chassis.moveToPose(68, 3, 80, 3000, {.forwards = true, .lead = 0.05, .maxSpeed =
 chassis.waitUntilDone();
 
 //Put mobile goal in corner
-chassis.moveToPose(56, -57, -45, 5000, {.forwards = false, .lead = 0.2, .maxSpeed = 127, .minSpeed = 127,});
+chassis.moveToPose(56, -57, -45, 5000, {.forwards = false, .lead = 0.2, .maxSpeed = 127, .minSpeed = 110,});
 pros::delay(1000);
 intakeauton(0);  
 chassis.waitUntilDone();
@@ -233,12 +233,51 @@ hookauton(0);
 pros::delay(500);
 
 //Drive to 2nd Mobile Goal 
-chassis.moveToPose(48, -24, 0, 4000, {.forwards = true, .lead = 0.2, .maxSpeed = 127, .minSpeed = 127,});
+chassis.moveToPose(48, -24, 0, 4000, {.forwards = true, .lead = 0.2, .maxSpeed = 127, .minSpeed = 110,});
 chassis.waitUntilDone();
-chassis.moveToPose(24, 24, -45, 4000, {.forwards = true, .lead = 0.35, .maxSpeed = 127, .minSpeed = 127,});
+chassis.moveToPose(24, 24, -45, 4000, {.forwards = true, .lead = 0.3, .maxSpeed = 127, .minSpeed = 110,});
 chassis.waitUntilDone();
 
+intakeauton(0);  
+
 //Get Center Ring first 
+chassis.moveToPose(0, 0, -135, 4000, {.forwards = true, .lead = 0.3, .maxSpeed = 127, .minSpeed = 110,});
+chassis.waitUntilDone();
+
+//Get 3 red rings on 2nd mobile goal 
+chassis.moveToPose(48, 24, 90, 4000, {.forwards = true, .lead = 0.2, .maxSpeed = 127, .minSpeed = 110,});
+chassis.waitUntilDone();
+chassis.moveToPose(48, 48, 0, 4000, {.forwards = true, .lead = 0.2, .maxSpeed = 127, .minSpeed = 110,});
+chassis.waitUntilDone();
+chassis.moveToPose(24, 48, -90, 4000, {.forwards = true, .lead = 0.2, .maxSpeed = 127, .minSpeed = 110,});
+chassis.waitUntilDone();
+
+//Go to corner and get both rings
+chassis.moveToPose(56, 57, 45, 4000, {.forwards = true, .lead = 0.3, .maxSpeed = 127, .minSpeed = 110,});
+pros::delay(1000);
+intakeauton(0);  
+chassis.waitUntilDone();
+chassis.moveToPose(52, 52, 45, 4000, {.forwards = false, .lead = 0.3, .maxSpeed = 127, .minSpeed = 110,});
+chassis.waitUntilDone();
+chassis.moveToPose(56, 57, 45, 4000, {.forwards = true, .lead = 0.3, .maxSpeed = 127, .minSpeed = 110,});
+chassis.waitUntilDone();
+chassis.moveToPose(50, 50, 45, 4000, {.forwards = false, .lead = 0.3, .maxSpeed = 127, .minSpeed = 110,});
+chassis.waitUntilDone();
+
+//Turn and put mobile goal in corner
+chassis.turnToHeading(-135, 1000);
+chassis.waitUntil(4);
+chassis.moveToPose(56, 57, -135, 4000, {.forwards = false, .lead = 0.3, .maxSpeed = 127, .minSpeed = 110,});
+chassis.waitUntilDone();
+
+hookauton(110);
+pros::delay(280);
+hookauton(0);
+
+pros::delay(500);
+
+
+
 
 
 
