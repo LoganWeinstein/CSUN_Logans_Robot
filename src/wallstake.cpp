@@ -2,13 +2,14 @@
 #include "subsystems.hpp"
 
 // Define positions (in motor degrees)
-const int point1 = 230;
-const int point2 = 1000;
+const int point1 = 140;
+const int point2 = 550;
+const int point3 = 1000;
 
 // State tracker
 bool isMoving = false;
 bool initialized = false;
-bool goToPoint1 = true;
+int cycleState = 0;
 // Removed pressCount, using goToPoint1 instead
 int targetPosition = 0;
 
@@ -23,74 +24,83 @@ bool hasReachedTarget(int target) {
 
 // Non-blocking wallstake control to run as a background task
 void wallstakecontrol() {
+
   wallstake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
   // Initial check: if not at limit switch, lower until it is
   if (!limitswitch.get_value()) {
-    wallstake.move(-127);
-    while (limitswitch.get_value()) {
-      pros::delay(10);
-    }
-    wallstake.move(0); // Stop after hitting limit switch
-    wallstake.tare_position(); // Reset position to 0 at limit
-    goToPoint1 = true; // Ensure it starts by going to point1
+    wallstake.move(-70);
+    pros::delay(1500);
+    wallstake.move(0);
+    pros::delay(50);
+    wallstake.tare_position();
+    isMoving = false;
+    targetPosition = point1;
+  } else {
+    wallstake.move(0);
+    pros::delay(50);
+    wallstake.tare_position();
+    isMoving = false;
+    targetPosition = point1;
   }
+  
+  // Moved outside of faulty block
+  // Initialization complete
+  // Initialization complete
   initialized = true;
 
   while (true) {
     // A: Force move to limit switch regardless
     if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
-      wallstake.move(-127);
-      int timeout = 250; // give up after 0.5 seconds just in case
-      int elapsed = 0;
-      while (!limitswitch.get_value() && elapsed < timeout) {
-        pros::delay(10);
-        elapsed += 10;
-      }
-      wallstake.move(0);
-      if (limitswitch.get_value()) {
+        wallstake.move(-90);
+        while (!limitswitch.get_value()) {
+          pros::delay(10);
+        }
         wallstake.move(0);
-        pros::delay(100);             // Allow motor to settle
-        wallstake.tare_position();             // Fully stop             // Stop after taring
+        pros::delay(100);
+        wallstake.tare_position();
         isMoving = false;
-        goToPoint1 = true; // Reset toggle so next press goes to point1
-      }
+        cycleState = 0;
     }
 
-    // R2: Alternate between point1 and point2
+
+// R2: Cycle between point1, point2, and point3
     if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2) && !isMoving) {
-      if (goToPoint1) {
-        targetPosition = point1;
-      } else {
-        targetPosition = point2;
-        conveyor.move(-127); // Briefly reverse conveyor before moving to point2
-        pros::delay(75);
-        conveyor.move(0);
+      switch (cycleState) {
+        case 0:
+          targetPosition = point1;
+          break;
+        case 1:
+          targetPosition = point2;
+          conveyor.move(-127);
+          pros::delay(75);
+          conveyor.move(0);
+          break;
+        case 2:
+          targetPosition = point3;
+          break;
       }
 
       moveToPosition(targetPosition);
-      goToPoint1 = !goToPoint1;
+      cycleState = (cycleState + 1) % 3;
     }
 
     // Check if motor reached target
     if (isMoving && hasReachedTarget(targetPosition)) {
       isMoving = false;
       pros::delay(100);
-      wallstake.move(0);
 
-      // Optional: add visual or audio feedback here
       if (targetPosition == point1) {
-        wallstake.move(10); // Hold lightly at point1
+        wallstake.move(5); // Light hold at point1
+      } else {
+        wallstake.move(0); // Use brake hold for point2 and point3
       }
     }
 
-      // Hook retract at point2
-    // Removed duplicate conveyor control block
-    }
-
-    pros::delay(20);
+    pros::delay(10); // main loop delay
+  }
+ 
 }
-
 
 /// Autonomous Section -----------------------------------------------------
 
@@ -113,28 +123,33 @@ void wallstake_move_to_point1() {
   wallstake.move(0);
 }
 
-void wallstake_move_to_point2() {
+void wallstake_move_to_point2_and_3() {
   wallstake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+
+  // Move to point 2 at full speed
   wallstake.move_absolute(point2, 127);
-  while (std::abs(wallstake.get_position() - point2) > 10) {
-    pros::delay(10);
-  }
   conveyor.move(-127);
   pros::delay(100);
   conveyor.move(0);
+  while (std::abs(wallstake.get_position() - point2) > 10) {
+    pros::delay(10);
+  }
+
+  // Move to point 3 at slower speed
+  wallstake.move_absolute(point3, 50);
+  while (std::abs(wallstake.get_position() - point3) > 10) {
+    pros::delay(10);
+  }
+
   wallstake.move(0);
 }
 
 void wallstake_auton() {
-  wallstake_lower_to_limit();
   wallstake_move_to_point1();
   pros::delay(300);
-  intake.move(127);
   conveyor.move(127);
-  pros::delay(1000);
-  intake.move(0);
+  pros::delay(800);
   conveyor.move(0);
-  wallstake_move_to_point2();
-  pros::delay(700);
-  wallstake_move_to_point1();
+  wallstake_move_to_point2_and_3();
+  pros::delay(800);
 }

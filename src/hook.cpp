@@ -40,9 +40,9 @@ void hookcontrol() {
     }
 
     // Going UP: stop after 1 sec
-    if (hookRunningUp && pros::millis() - upStartTime >= 800) {
+    if (hookRunningUp && pros::millis() - upStartTime >= 300) {
         hookRunningUp = false;
-        hookDirection = 0.1;
+        hookDirection = 0;
     }
 
     // Going DOWN: change to 20% after 1 sec

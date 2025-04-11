@@ -148,7 +148,9 @@ void competition_initialize() {}
 // get a path used for pure pursuit
 // this needs to be put outside a function
 // '.' replaced with "_" to make c++ happy
-ASSET(newtrial_txt);
+ASSET(matchstart2_txt);
+// ASSET();
+// ASSET();
 /**
  * Runs during auto
  *
@@ -159,84 +161,124 @@ void autonomous() {
 //SET POSE MIDWAY THROUGH
 //Base off the center for the skills path 
 
-//Skills auton (right side)////////////////////////////////////////////
+//Skills auton (right side) -------------------------------------------------------------------
 chassis.setPose(24, -55.5, 180);
-hookauton(90); 
 
-chassis.moveToPose(52, -20, -135, 4000, {.forwards = false, .maxSpeed = 100, .minSpeed = 70});
-    chassis.waitUntil(4); 
-chassis.moveToPose(48, -24, -135, 4000, {.forwards = false, .maxSpeed = 20, .minSpeed = 20});
-    chassis.waitUntilDone();
+hookauton(110); 
+pros::delay(200);
+hookauton(0);
 
-    hookauton(-100);
-    intakeauton(127);  
+//Get mobile goal 
+chassis.moveToPose(56, -12, -135, 4000, {.forwards = false,  .maxSpeed = 70, .minSpeed = 50});
+chassis.waitUntilDone();
 
-    pros::delay(200);
+hookauton(-127);
+intakeauton(127);  
 
-chassis.moveToPose(48, -48, 180, 4000, {.forwards = true, .maxSpeed = 100, .minSpeed = 70});
-    chassis.waitUntilDone();
+pros::delay(200);
 
-    hookauton(-30);
+chassis.moveToPose(48, -45, 180, 4000, {.forwards = true, .maxSpeed = 127, .minSpeed = 110});
+chassis.waitUntilDone();
 
-chassis.moveToPose(68, -68, 135, 4000, {.forwards = true, .maxSpeed = 100, .minSpeed = 70});
-    chassis.waitUntilDone();
+hookauton(-30);
+
+//Get corner
+chassis.moveToPose(63.5, -60, 135, 3000, {.forwards = true, .lead = 0.55, .maxSpeed = 90, .minSpeed = 70});
+chassis.waitUntilDone();
+
+pros::delay(1000);
+
+chassis.moveToPose(48, -45, 135, 4000, {.forwards = false, .maxSpeed = 127, .minSpeed = 110,});
+chassis.waitUntilDone();
+
+//Get middle ring and score on aliance stake
+chassis.moveToPose(0, -48,-90, 4000, {.forwards = true , .lead = 0.15, .maxSpeed = 127, .minSpeed = 110,});
+pros::delay(1000);
+intakeauton(0); 
+chassis.waitUntilDone();
+
+wallstake_lower_to_limit();
+
+chassis.moveToPose(0, -55,180, 4000, {.forwards = true , .maxSpeed = 110, .minSpeed = 100,});
+chassis.waitUntilDone();
+
+wallstake_auton();
+
+    // chassis.turnToHeading(45, 1000);
+    // chassis.waitUntil(3);
+
+chassis.moveToPose(24, -24, 0, 3000, {.forwards = true, .maxSpeed = 127, .minSpeed = 110,});
+chassis.waitUntilDone();
+chassis.moveToPose(4, -4, -45, 3000, {.forwards = true, .maxSpeed = 127, .minSpeed = 110,});
+chassis.waitUntilDone();
+chassis.moveToPose(24, -24, -45, 3000, {.forwards = false, .maxSpeed = 127, .minSpeed = 110,});
+chassis.waitUntilDone();
+
+//Get middle line rings
+chassis.moveToPose(45, 0, 90, 3000, {.forwards = true, .lead = 0.05, .maxSpeed = 70, .minSpeed = 50,});
+chassis.waitUntilDone();
+chassis.moveToPose(68, 3, 80, 3000, {.forwards = true, .lead = 0.05, .maxSpeed = 70, .minSpeed = 50,});
+chassis.waitUntilDone();
+
+//Put mobile goal in corner
+chassis.moveToPose(56, -57, -45, 5000, {.forwards = false, .lead = 0.2, .maxSpeed = 127, .minSpeed = 127,});
+pros::delay(1000);
+intakeauton(0);  
+chassis.waitUntilDone();
+
+hookauton(110);
+pros::delay(280);
+hookauton(0);
+
+pros::delay(500);
+
+//Drive to 2nd Mobile Goal 
+chassis.moveToPose(48, -24, 0, 4000, {.forwards = true, .lead = 0.2, .maxSpeed = 127, .minSpeed = 127,});
+chassis.waitUntilDone();
+chassis.moveToPose(24, 24, -45, 4000, {.forwards = true, .lead = 0.35, .maxSpeed = 127, .minSpeed = 127,});
+chassis.waitUntilDone();
+
+//Get Center Ring first 
+
+
 
 
 
 //Match Auton (right side)///////////////////////////////////////
-/*
-chassis.setPose(24, 8, 180);  //Take the wall into account
 
-    hookauton(90); 
-
-    chassis.moveToPose(-12, 24, 90, 4000, {.forwards = false, .maxSpeed = 100, .minSpeed = 40});
-    chassis.waitUntil(4); 
-    chassis.moveToPose(-12, 24, 90, 4000, {.forwards = false, .maxSpeed = 20, .minSpeed = 20});
-    chassis.waitUntilDone();
-
-    hookauton(-100);
-    intakeauton(127);
-
-    pros::delay(200);
-
-    chassis.moveToPose(0, 10, 135, 4000, {.forwards = true,.maxSpeed = 100,.minSpeed = 40});
-        chassis.waitUntilDone();
-
-    hookauton(-30);
-
-    chassis.moveToPose(50, 24, 90, 4000, {.forwards = true,.maxSpeed = 100,.minSpeed = 40});
-        chassis.waitUntilDone();
-    
-*/
+// chassis.follow(matchstart2_txt, 10, 4000, true);
 
 
 
 
 
-    // // Move to x: 0 and y: 0 and face heading 270, going backwards. Timeout set to 4000ms
-    // chassis.moveToPose(0, 0, 270, 4000, {.forwards = false});
-    // // cancel the movement after it has traveled 10 inches
-    // chassis.waitUntil(10);
-    // chassis.cancelMotion();
-    // // Turn to face the point x:45, y:-45. Timeout set to 1000
-    // // dont turn faster than 60 (out of a maximum of 127)
-    // chassis.turnToPoint(45, -45, 1000, {.maxSpeed = 60});
-    // // Turn to face a direction of 90º. Timeout set to 1000
-    // // will always be faster than 100 (out of a maximum of 127)
-    // // also force it to turn clockwise, the long way around
-    // chassis.turnToHeading(90, 1000, {.direction = AngularDirection::CW_CLOCKWISE, .minSpeed = 100});
-    // // Follow the path in path.txt. Lookahead at 15, Timeout set to 4000
-    // // following the path with the back of the robot (forwards = false)
-    // // see line 116 to see how to define a path
-    // chassis.follow(example_txt, 15, 4000, false);
-    // // wait until the chassis has traveled 10 inches. Otherwise the code directly after
-    // // the movement will run immediately
-    // // Unless its another movement, in which case it will wait
-    // chassis.waitUntil(10);
-    // pros::lcd::print(4, "Traveled 10 inches during pure pursuit!");
-    // // wait until the movement is done
-    // chassis.waitUntilDone();
-    // pros::lcd::print(4, "pure pursuit finished!");
+
+
+
+// // Move to x: 0 and y: 0 and face heading 270, going backwards. Timeout set to 4000ms
+// chassis.moveToPose(0, 0, 270, 4000, {.forwards = false});
+// // cancel the movement after it has traveled 10 inches
+// chassis.waitUntil(10);
+// chassis.cancelMotion();
+// // Turn to face the point x:45, y:-45. Timeout set to 1000
+// // dont turn faster than 60 (out of a maximum of 127)
+// chassis.turnToPoint(45, -45, 1000, {.maxSpeed = 60});
+// // Turn to face a direction of 90º. Timeout set to 1000
+// // will always be faster than 100 (out of a maximum of 127)
+// // also force it to turn clockwise, the long way around
+// chassis.turnToHeading(90, 1000, {.direction = AngularDirection::CW_CLOCKWISE, .minSpeed = 100});
+// // Follow the path in path.txt. Lookahead at 15, Timeout set to 4000
+// // following the path with the back of the robot (forwards = false)
+// // see line 116 to see how to define a path
+// chassis.follow(example_txt, 15, 4000, false);
+// // wait until the chassis has traveled 10 inches. Otherwise the code directly after
+// // the movement will run immediately
+// // Unless its another movement, in which case it will wait
+// chassis.waitUntil(10);
+// pros::lcd::print(4, "Traveled 10 inches during pure pursuit!");
+// // wait until the movement is done
+// chassis.waitUntilDone();
+// pros::lcd::print(4, "pure pursuit finished!");
 }
 
 /**

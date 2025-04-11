@@ -11,7 +11,7 @@ void setColorDetectionEnabled(bool enabled) {
 void objectDetectionTask(void* param) {
     while (true) {
         if (!detection_enabled) {
-            pros::delay(20);
+            pros::delay(5);
             continue;
         }
 
@@ -21,9 +21,9 @@ void objectDetectionTask(void* param) {
 
             // Blue ring: jerk the conveyor back quickly and resume
             if (hue >= 150 && hue <= 230) {
-                // pros::delay(150);
+                pros::delay(135);
                 conveyor.move(0);
-                pros::delay(1000);
+                pros::delay(300);
                 conveyor.move(127);  // Resume forward motion
             }
 

@@ -1,0 +1,32 @@
+-59.059, -23.597, 87.527
+-57.062, -23.683, 87.71
+-55.077, -23.919, 88.267
+-53.114, -24.3, 89.011
+-51.184, -24.825, 89.428
+-49.296, -25.481, 90.307
+-47.45, -26.251, 91.195
+-45.651, -27.124, 90.33
+-43.905, -28.098, 87.473
+-42.206, -29.153, 84.52
+-40.554, -30.28, 81.46
+-38.953, -31.478, 78.28
+-37.396, -32.734, 74.965
+-35.881, -34.039, 71.497
+-34.412, -35.396, 67.851
+-32.981, -36.793, 63.999
+-31.587, -38.227, 59.899
+-30.231, -39.697, 55.496
+-28.908, -41.197, 50.714
+-27.617, -42.724, 45.43
+-26.358, -44.279, 39.445
+-25.128, -45.855, 32.371
+-23.925, -47.453, 23.236
+-22.675, -49.172, 0
+-22.675, -49.172, 0
+-10.909, -65.345, 0
+endData
+127
+100
+200
+-59.059, -23.597, -43.504, -23.597, -30.584, -38.099, -22.675, -49.172
+#PATH.JERRYIO-DATA {"appVersion":"0.8.3","format":"LemLib v0.5","gc":{"robotWidth":15,"robotHeight":15,"robotIsHolonomic":false,"showRobot":false,"uol":2.54,"pointDensity":2,"controlMagnetDistance":1.968503937007874,"fieldImage":{"displayName":"VURC 2025 - High Stakes (Skills)","signature":"VURC 2025 - High Stakes (Skills)","origin":{"__type":"built-in"}},"coordinateSystem":"Cartesian Plane"},"paths":[{"segments":[{"controls":[{"uid":"8Eysv7fpf7","x":-59.05940523314803,"y":-23.597396287351554,"lock":false,"visible":true,"heading":90,"__type":"end-point"},{"uid":"a6ldzjkmqH","x":-43.50357974763136,"y":-23.597396287351554,"lock":false,"visible":true,"__type":"control"},{"uid":"Bnklt2qaSP","x":-30.58433485288023,"y":-38.09858953656201,"lock":false,"visible":true,"__type":"control"},{"uid":"JrV7byGcXw","x":-22.67459308058362,"y":-49.172228017777265,"lock":false,"visible":true,"heading":135,"__type":"end-point"}],"speedProfiles":[],"lookaheadKeyframes":[],"uid":"Niwfg31tFH"}],"pc":{"speedLimit":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":127,"label":"127"},"step":1,"from":20,"to":100},"bentRateApplicableRange":{"minLimit":{"value":0,"label":"0"},"maxLimit":{"value":1,"label":"1"},"step":0.001,"from":0,"to":0.1},"maxDecelerationRate":127},"name":"Path","uid":"dPO13g1Mbf","lock":false,"visible":true}]}
