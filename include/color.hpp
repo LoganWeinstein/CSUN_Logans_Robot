@@ -1,4 +1,7 @@
 #pragma once
 
-void objectDetectionTask(void* param);
+#pragma once
+
 void setColorDetectionEnabled(bool enabled);
+void objectDetectionTask(void* param);
+bool detectAndPauseIfRing();

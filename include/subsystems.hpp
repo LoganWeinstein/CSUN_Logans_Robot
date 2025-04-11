@@ -2,7 +2,9 @@
 
 #include "api.h"
 #include "pros/motors.hpp"
+#include "lemlib/api.hpp"
 
+extern lemlib::Chassis chassis;
 extern pros::Controller controller;
 
 inline pros::Motor intake(7);

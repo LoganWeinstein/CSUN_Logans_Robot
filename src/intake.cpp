@@ -4,14 +4,21 @@
 void intakeauton(int speed) {
     if (speed > 0) {
         intake.move(speed);
-        conveyor.move(speed);
     } else if (speed < 0) {
         intake.move(speed);
-        conveyor.move(speed);
     } else if (speed == 0) {
         intake.move(0);
-        conveyor.move(0);
     }
+}
+
+void conveyorauton(int speed) {
+  if (speed > 0) {
+      conveyor.move(speed);
+  } else if (speed < 0) {
+      conveyor.move(speed);
+  } else if (speed == 0) {
+      conveyor.move(0);
+  }
 }
 
 bool intakeRunning = false; // Tracks if intake is running forward

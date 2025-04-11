@@ -146,7 +146,7 @@ void wallstake_move_to_point2_and_3() {
 
 void wallstake_auton() {
   wallstake_move_to_point1();
-  pros::delay(300);
+  pros::delay(500);
   conveyor.move(127);
   pros::delay(800);
   conveyor.move(0);

@@ -1,6 +1,8 @@
 #pragma once
 
-void Auton_Test_1();
+//Custom Autons
+void skillsright();
+void matchright();
 
 
 void default_constants();
