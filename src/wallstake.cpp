@@ -2,7 +2,7 @@
 #include "subsystems.hpp"
 
 // Define positions (in motor degrees)
-const int point1 = 140;
+const int point1 = 133;
 const int point2 = 550;
 const int point3 = 1000;
 
@@ -30,7 +30,9 @@ void wallstakecontrol() {
   // Initial check: if not at limit switch, lower until it is
   if (!limitswitch.get_value()) {
     wallstake.move(-70);
-    pros::delay(1500);
+    while (!limitswitch.get_value()) {
+      pros::delay(10);
+    }
     wallstake.move(0);
     pros::delay(50);
     wallstake.tare_position();
@@ -52,12 +54,12 @@ void wallstakecontrol() {
   while (true) {
     // A: Force move to limit switch regardless
     if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
-        wallstake.move(-90);
+        wallstake.move(-70);
         while (!limitswitch.get_value()) {
           pros::delay(10);
         }
         wallstake.move(0);
-        pros::delay(100);
+        pros::delay(50);
         wallstake.tare_position();
         isMoving = false;
         cycleState = 0;
@@ -91,7 +93,7 @@ void wallstakecontrol() {
       pros::delay(100);
 
       if (targetPosition == point1) {
-        wallstake.move(5); // Light hold at point1
+        wallstake.move(10); // Light hold at point1
       } else {
         wallstake.move(0); // Use brake hold for point2 and point3
       }

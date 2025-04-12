@@ -21,19 +21,27 @@ void conveyorauton(int speed) {
   }
 }
 
-bool intakeRunning = false; // Tracks if intake is running forward
-
 void intakecontrol() {
-  // Toggle forward intake/conveyor on R1
+  static bool intakeToggled = false;
+
+  // Toggle forward intake/conveyor on R1 press
   if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R1)) {
-    if (!intakeRunning) {
+      intakeToggled = !intakeToggled;
+  }
+
+  // Hold Y to reverse intake/conveyor (overrides toggle)
+  if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
+      intake.move(-127);
+      conveyor.move(-127);
+  } 
+  // Toggle forward mode if Y is not held
+  else if (intakeToggled) {
       intake.move(127);
       conveyor.move(127);
-    } else {
+  } 
+  // Stop if neither toggle nor Y is active
+  else {
       intake.move(0);
       conveyor.move(0);
-    }
-    intakeRunning = !intakeRunning;
   }
 }
-
