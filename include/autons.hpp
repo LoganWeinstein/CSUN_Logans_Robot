@@ -2,7 +2,9 @@
 
 //Custom Autons
 void skillsright();
+void skills1();
 void matchright();
+void skillstest();
 
 
 void default_constants();

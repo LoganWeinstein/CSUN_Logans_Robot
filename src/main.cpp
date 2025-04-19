@@ -8,7 +8,7 @@
 #include "bullrush.hpp"
 #include "hook.hpp"
 #include "color.hpp"
-#include "autons.hpp"
+
 
 
 // controller
@@ -25,16 +25,17 @@ pros::Imu imu(21);
 // tracking wheels
 // horizontal tracking wheel encoder. Rotation sensor, port 20, not reversed
 pros::Rotation horizontalEnc(17);
-// vertical tracking wheel encoder. Rotation sensor, port 11, reversed
-pros::Rotation verticalEncLeft(-15);   
+// vertical tracking wheel encoder. Rotation sensor, port 11, reversed 
+pros::Rotation verticalEncLeft(15);
 pros::Rotation verticalEncRight(16);
 
 // horizontal tracking wheel. 2.75" diameter, 5.75" offset, back of the robot (negative)
-lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::NEW_275, -3.430, 1);
+lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::OLD_275, -3.430, 1);
 
 // vertical tracking wheel. 2.75" diameter, 2.5" offset, left of the robot (negative)
-lemlib::TrackingWheel verticalLeft(&verticalEncLeft, lemlib::Omniwheel::NEW_4, -5.975, 1.67);   
-lemlib::TrackingWheel verticalRight(&verticalEncRight, lemlib::Omniwheel::NEW_4, 5.975, 1.67);
+lemlib::TrackingWheel verticalLeft(&verticalEncLeft, lemlib::Omniwheel::NEW_275_HALF, -4.0, 1);   
+// lemlib::TrackingWheel verticalRight(&verticalEncRight, lemlib::Omniwheel::NEW_4, 5.975, 1.56); 
+// lemlib::TrackingWheel verticalLeft(&verticalEncLeft, lemlib::Omniwheel::NEW_4, -5.975, 1.56);
 
 // drivetrain settings
 lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
@@ -46,15 +47,14 @@ lemlib::Drivetrain drivetrain(&leftMotors, // left motor group
 );
 
 // lateral motion controller
-lemlib::ControllerSettings linearController(10, // proportional gain (kP)
-                                            0, // integral gain (kI)
-                                            3, // derivative gain (kD)
-                                            3, // anti windup
-                                            2, // small error range, in inches
-                                            250, // small error range timeout, in milliseconds
-                                            4, // large error range, in inches
-                                            400, // large error range timeout, in milliseconds
-                                            20 // maximum acceleration (slew)
+lemlib::ControllerSettings linearController(
+    15,  // kP
+    0,
+    20,  // kD for good braking
+    3,
+    2, 250,
+    4, 400,
+    20
 );
 
 // angular motion controller
@@ -70,8 +70,8 @@ lemlib::ControllerSettings angularController(2, // proportional gain (kP)
 );
 
 // sensors for odometry
-lemlib::OdomSensors sensors(nullptr, // vertical tracking wheel
-                            &verticalLeft, // vertical tracking wheel 2, set to nullptr as we don't have a second one
+lemlib::OdomSensors sensors(&verticalLeft, // vertical tracking wheel
+                            nullptr, // vertical tracking wheel 2, set to nullptr as we don't have a second one
                             &horizontal, // horizontal tracking wheel
                             nullptr, // horizontal tracking wheel 2, set to nullptr as we don't have a second one
                             &imu // inertial sensor
@@ -101,11 +101,8 @@ lemlib::Chassis chassis(drivetrain, linearController, angularController, sensors
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-    pros::lcd::initialize(); // initialize brain screen
     chassis.calibrate(); // calibrate sensors
-
-
-    
+    pros::lcd::initialize(); // initialize brain screen
    
 
     // the default rate is 50. however, if you need to change the rate, you
@@ -154,20 +151,119 @@ void competition_initialize() {}
  * This is an example autonomous routine which demonstrates a lot of the features LemLib has to offer
  */
 void autonomous() {
-    eye.set_led_pwm(100);
-    pros::Task detectTask(objectDetectionTask);
+    // eye.set_led_pwm(100);
+    // pros::Task detectTask(objectDetectionTask);
     
-    // Enable color detection right from the start
-    setColorDetectionEnabled(true);
+    // // Enable color detection right from the start
+    // setColorDetectionEnabled(true);
 
+chassis.setPose(0, -58.5, 0);
 
-//Autons (only enable one because no auton selector)
-skillsright();
+intakeauton(127); 
+conveyorauton(127);
 
-// matchright();
+//Get Middle Ring and Score on Alliance Stake
+chassis.moveToPoint(0, -48, 3000, {.forwards = true, .maxSpeed = 127,}, true); //Async (moves on)
+chassis.waitUntilDone();
 
+while (!detectAndPauseIfRing()) {
+    pros::delay(5); // check every 5ms
 }
 
+chassis.moveToPoint(0, -60, 3000, {.forwards = false, .maxSpeed = 127,});
+chassis.waitUntilDone();
+
+pros::delay(300);
+
+conveyorauton(127);
+pros::delay(500);
+conveyorauton(0);
+
+hookauton(90); 
+pros::delay(200);
+hookauton(10);
+
+//Get 1st mobile goal 
+chassis.moveToPose(24, -40, -135, 3000, {.forwards = true,  .maxSpeed = 127});
+chassis.waitUntilDone();
+
+chassis.moveToPose(53, -19, -130, 3000, {.forwards = false,  .maxSpeed = 70});
+chassis.waitUntilDone();
+
+hookauton(-90);
+
+//Get middle line of rings
+chassis.moveToPose(48, 0, 0, 3000, {.forwards = true,  .maxSpeed = 127});
+hookauton(-40);
+chassis.waitUntilDone();
+
+//Get 3 rings
+chassis.moveToPose(48, -12, 0, 3000, {.forwards = false, .maxSpeed = 127});
+chassis.waitUntilDone();
+
+chassis.moveToPose(24, -24, -110, 3000, {.forwards = true, .maxSpeed = 127});
+chassis.waitUntilDone();
+
+chassis.moveToPose(4, -2, -45, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127,});
+chassis.waitUntilDone();
+
+chassis.moveToPose(4, 3, -30, 3000, {.forwards = true, .lead = 0.05, .maxSpeed = 127,});
+chassis.waitUntilDone(); 
+
+//Get two rings and put mobile goal in corner
+chassis.moveToPose(30, -25, -45, 3000, {.forwards = false, .lead = 0.1, .maxSpeed = 127,});
+chassis.waitUntilDone();
+chassis.moveToPose(48, -48, 135, 3000, {.forwards = true, .lead = 0.2, .maxSpeed = 127,});
+chassis.waitUntilDone();
+chassis.moveToPose(60, -56.5, 135, 3000, {.forwards = true, .maxSpeed = 90});
+chassis.waitUntilDone();
+chassis.moveToPose(48, -48, 135, 3000, {.forwards = false, .maxSpeed = 127,});
+chassis.waitUntilDone();
+chassis.turnToHeading(-45, 1000);
+chassis.waitUntil(2);
+chassis.moveToPose(56, -57, -45, 5000, {.forwards = false, .lead = 0.2, .maxSpeed = 127,});
+pros::delay(300);
+intakeauton(0); 
+conveyorauton(0);
+chassis.waitUntilDone();
+
+hookauton(100);
+pros::delay(300);
+hookauton(10);
+
+pros::delay(500);
+
+//Drive to middle rings
+chassis.moveToPose(60, 14, 0, 4000, {.forwards = true, .maxSpeed = 127,}, true);
+intakeauton(127); 
+conveyorauton(127);
+chassis.waitUntilDone(); //async
+
+while (!detectAndPauseIfRing()) {
+    pros::delay(5); // check every 5ms
+}
+
+chassis.moveToPose(60, 0, 0, 3000, {.forwards = false, .maxSpeed = 127,});
+chassis.waitUntilDone();
+
+chassis.turnToHeading(90, 1000);
+chassis.waitUntilDone();
+
+// wallstake_lower_to_limit();
+
+pros::delay(500);
+
+wallstake_auton();
+
+// wallstake_lower_to_limit();
+
+//Go to 2nd mobile goal
+chassis.moveToPose(24, 24, -45, 3000, {.forwards = true, .lead = 0.3, .maxSpeed = 127,});
+chassis.waitUntilDone();
+
+
+
+}
 
 
 
@@ -213,34 +309,15 @@ skillsright();
  */
 void opcontrol() {
 	
-    verticalEncLeft.reset_position();
-    verticalEncRight.reset_position();
-    horizontalEnc.reset_position();
-
-    eye.set_led_pwm(100);
-    pros::Task detectTask(objectDetectionTask);
-    
-    // Enable color detection right from the start
-    setColorDetectionEnabled(false);
-
     pros::Task wallstake_task(wallstakecontrol);
     pros::Task bullrush_task(bullrushcontrol);
 
-	while (true) {
-		pros::lcd::print(0, "VL Pos: %.2f", verticalEncLeft.get_position());
-		pros::lcd::print(1, "VR Pos: %.2f", verticalEncRight.get_position());
-		pros::lcd::print(2, "H Pos:  %.2f", horizontalEnc.get_position());
-        
+    while (true) {
         int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);
         int rightY = controller.get_analog(pros::E_CONTROLLER_ANALOG_RIGHT_Y);
-        // move the robot
         chassis.tank(leftY, rightY);
-        // delay to save resources
-
-	intakecontrol();
-	hookcontrol();
-
-    pros::delay(25);
-	
+        intakecontrol();
+        hookcontrol();
+        pros::delay(25);
     }
 }

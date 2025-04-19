@@ -1,72 +1,65 @@
 #include "main.h"
 #include "subsystems.hpp"
+#include <algorithm>
 
-// Define positions (in motor degrees)
-const int point1 = 133;
-const int point2 = 550;
-const int point3 = 1000;
+// Define target positions in degrees
+const int point1 = 20;
+const int point2 = 180;
 
-// State tracker
+// State variables
 bool isMoving = false;
 bool initialized = false;
 int cycleState = 0;
-// Removed pressCount, using goToPoint1 instead
 int targetPosition = 0;
 
-void moveToPosition(int target) {
-  wallstake.move_absolute(target, 127);
-  isMoving = true;
-}
-
+// Check if target is reached (within ±7 degrees)
 bool hasReachedTarget(int target) {
-  return std::abs(wallstake.get_position() - target) < 5;
+  return std::abs(wallstake_sensor.get_angle() - target) < 7;
 }
 
-// Non-blocking wallstake control to run as a background task
-void wallstakecontrol() {
+// Move motor using simplified proportional control until sensor reaches target
+void moveToPosition(int target) {
+  isMoving = true;
 
+  while (std::abs(wallstake_sensor.get_angle() - target) > 3) { // 3° tolerance
+      int direction = (wallstake_sensor.get_angle() < target) ? 1 : -1;
+      wallstake.move(direction * 70); // fixed speed toward target
+      pros::delay(10);
+  }
+
+  wallstake.move(0); 
+  isMoving = false;
+}
+
+// Main wallstake control task
+void wallstakecontrol() {
   wallstake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
-  // Initial check: if not at limit switch, lower until it is
+  // Initial reset to bottom via limit switch
   if (!limitswitch.get_value()) {
     wallstake.move(-70);
-    while (!limitswitch.get_value()) {
-      pros::delay(10);
-    }
-    wallstake.move(0);
-    pros::delay(50);
-    wallstake.tare_position();
-    isMoving = false;
-    targetPosition = point1;
-  } else {
-    wallstake.move(0);
-    pros::delay(50);
-    wallstake.tare_position();
-    isMoving = false;
-    targetPosition = point1;
+    while (!limitswitch.get_value()) pros::delay(10);
   }
-  
-  // Moved outside of faulty block
-  // Initialization complete
-  // Initialization complete
+  wallstake.move(0);
+  pros::delay(50);
+  wallstake_sensor.reset_position();
+  isMoving = false;
+  targetPosition = point1;
   initialized = true;
 
   while (true) {
-    // A: Force move to limit switch regardless
+    // Manual reset with A button
     if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_A)) {
-        wallstake.move(-70);
-        while (!limitswitch.get_value()) {
-          pros::delay(10);
-        }
-        wallstake.move(0);
-        pros::delay(50);
-        wallstake.tare_position();
-        isMoving = false;
-        cycleState = 0;
+      wallstake.move(-70);
+      while (!limitswitch.get_value()) pros::delay(10);
+      wallstake.move(0);
+      pros::delay(50);
+      wallstake_sensor.reset_position();
+      isMoving = false;
+      cycleState = 0;
     }
 
-
-// R2: Cycle between point1, point2, and point3
+    // R2 cycles between point1 and point2
     if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_R2) && !isMoving) {
       switch (cycleState) {
         case 0:
@@ -78,80 +71,51 @@ void wallstakecontrol() {
           pros::delay(75);
           conveyor.move(0);
           break;
-        case 2:
-          targetPosition = point3;
-          break;
       }
-
       moveToPosition(targetPosition);
-      cycleState = (cycleState + 1) % 3;
+      cycleState = (cycleState + 1) % 2;
     }
 
-    // Check if motor reached target
-    if (isMoving && hasReachedTarget(targetPosition)) {
-      isMoving = false;
-      pros::delay(100);
-
-      if (targetPosition == point1) {
-        wallstake.move(10); // Light hold at point1
-      } else {
-        wallstake.move(0); // Use brake hold for point2 and point3
-      }
-    }
-
-    pros::delay(10); // main loop delay
+    pros::delay(10);
   }
- 
 }
 
-/// Autonomous Section -----------------------------------------------------
-
-void wallstake_lower_to_limit() {
+// Autonomous wallstake control sequence --------------------------------------------
+void wallstake_auton() {
   wallstake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+
+  // Lower to limit switch to zero the sensor
   wallstake.move(-100);
   while (!limitswitch.get_value()) {
     pros::delay(10);
   }
   wallstake.move(0);
-  wallstake.tare_position();
-}
-
-void wallstake_move_to_point1() {
-  wallstake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-  wallstake.move_absolute(point1, 127);
-  while (std::abs(wallstake.get_position() - point1) > 10) {
-    pros::delay(10);
-  }
-  wallstake.move(0);
-}
-
-void wallstake_move_to_point2_and_3() {
-  wallstake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-
-  // Move to point 2 at full speed
-  wallstake.move_absolute(point2, 127);
-  conveyor.move(-127);
+  wallstake_sensor.reset_position();
   pros::delay(100);
-  conveyor.move(0);
-  while (std::abs(wallstake.get_position() - point2) > 10) {
+
+  // Move to point1, place preload
+  moveToPosition(point1);
+  
+
+  // Wait for ring detection
+  while (true) {
+    if (eye.get_proximity() > 150) {
+      int hue = eye.get_hue();
+      if ((hue >= 0 && hue <= 25) || (hue >= 150 && hue <= 230)) {
+        conveyor.move(0);
+        break;
+      }
+    }
     pros::delay(10);
   }
 
-  // Move to point 3 at slower speed
-  wallstake.move_absolute(point3, 50);
-  while (std::abs(wallstake.get_position() - point3) > 10) {
-    pros::delay(10);
-  }
-
-  wallstake.move(0);
-}
-
-void wallstake_auton() {
-  wallstake_move_to_point1();
   pros::delay(500);
   conveyor.move(127);
-  pros::delay(800);
+
+  // Move to point2 after placing
+  moveToPosition(point2);
+  conveyor.move(-127);
+  pros::delay(75);
   conveyor.move(0);
-  wallstake_move_to_point2_and_3();
-  pros::delay(800);
-}
+  pros::delay(1000);
+} 
