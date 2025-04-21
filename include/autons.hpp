@@ -2,8 +2,10 @@
 
 //Custom Autons
 void skillsright();
-void skillsRnew();
+void skillsrightNEW();
+void skillsleftNEW();
 void matchright();
+void matchleft();
 
 
 
