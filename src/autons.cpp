@@ -13,12 +13,7 @@
 // //ASSET(matchstart2_txt);
 
 
-// void skillstest() {
 
-// chassis.moveToPoint(0, 24, 4000, {.forwards = true,  .maxSpeed = 127, .minSpeed = 110,});
-// chassis.waitUntilDone();
-
-// }
 
 // //Skills auton (right side) -------------------------------------------------------------------
 // void skillsright() {

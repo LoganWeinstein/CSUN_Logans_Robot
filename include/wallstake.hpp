@@ -1,16 +1,40 @@
-#pragma once 
+#pragma once
+
+#include "lemlib/pid.hpp"
+
+// PID controller state
+extern lemlib::PID wallstakePID;
+extern bool isPIDRunning;
+
+// Wallstake movement states
+enum WALLSTAKE_STATE { BASE_STATE, LOAD_STATE, SCORE_STATE };
+extern WALLSTAKE_STATE current_state;
+
+// Target positions
+constexpr int point1 = 0; // limit switch reset position
+extern int point2;           // load position
+extern int point3;           // score position
+
+// Function declarations
+void moveTo(WALLSTAKE_STATE state, int max_error = 20, int timeout = 2000);
+void wallstake_lower_to_limit();
+void wallstake_auton();
+void wallstakecontrol();
+
+
+// Header file for code #1 
 
 //Driver control functions
-void wallstakecontrol();
-void moveToPosition(int target);
-void hasReachedTarget(int target);
+// void wallstakecontrol();
+// void moveToPosition(int target);
+// void hasReachedTarget(int target);
 // void test_rotation_sensor();
 
-//Auton functions
+
+// Auton functions
 // void wallstake_lower_to_limit();
-// void wallstake_move_to_point1();
-// void wallstake_move_to_point2_and_3();
-void wallstake_auton();
+// void wallstake_auton();
+
 
 
 

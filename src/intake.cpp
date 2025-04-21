@@ -36,7 +36,7 @@ void intakecontrol() {
   } 
   // Toggle forward mode if Y is not held
   else if (intakeToggled) {
-      intake.move(127);
+      intake.move(100);
       conveyor.move(127);
   } 
   // Stop if neither toggle nor Y is active
