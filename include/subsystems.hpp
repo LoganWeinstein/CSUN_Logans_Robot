@@ -5,7 +5,7 @@
 #include "lemlib/api.hpp"
 #include "pros/rotation.hpp"
 
-// extern lemlib::Chassis chassis;
+extern lemlib::Chassis chassis;
 extern pros::Controller controller;
 
 inline pros::Motor intake(7);
