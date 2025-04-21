@@ -155,7 +155,10 @@ void competition_initialize() {}
 
 //**NO MINIMUM SPEED, doesent allow robot to decelerate to correct heading/position 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 53fd74a816273b2edebe95cfef86e7018ced41e4
 void autonomous() {
     // eye.set_led_pwm(100);
     // pros::Task detectTask(objectDetectionTask);
@@ -163,16 +166,12 @@ void autonomous() {
     // // Enable color detection right from the start
     // setColorDetectionEnabled(true);
 
-//Call Different Autons from above
-skillsRnew();
+
+skillsrightNEW();
 // skillsright();
 
 
 }
-
-//Match Auton (right side)///////////////////////////////////////
-
-// chassis.follow(matchstart2_txt, 10, 4000, true);
 
 
 
