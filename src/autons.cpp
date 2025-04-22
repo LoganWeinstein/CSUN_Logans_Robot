@@ -15,7 +15,6 @@
 void skillsrightNEW() {
 
 chassis.setPose(0, -58.5, 0);
-eye.set_led_pwm(100);
 
 wallstake_lower_to_limit();
 

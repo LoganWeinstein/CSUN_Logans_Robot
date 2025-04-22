@@ -156,11 +156,9 @@ void competition_initialize() {}
 //**NO MINIMUM SPEED, doesent allow robot to decelerate to correct heading/position 
 
 void autonomous() {
-    // eye.set_led_pwm(100);
-    // pros::Task detectTask(objectDetectionTask);
-    
-    // // Enable color detection right from the start
-    // setColorDetectionEnabled(true);
+eye.set_led_pwm(100); //DONT Take Out 
+pros::Task detectTask(objectDetectionTask);
+setColorDetectionEnabled(false);
 
 
 skillsrightNEW();
@@ -202,10 +200,12 @@ skillsrightNEW();
  * Runs in driver control
  */
 void opcontrol() {
-	
 pros::lcd::initialize();
-   
-    
+
+//Color sorting --------------------------------
+pros::Task detectTask(objectDetectionTask);
+
+
 pros::Task wallstake_task(wallstakecontrol);
 pros::Task bullrush_task(bullrushcontrol);
    

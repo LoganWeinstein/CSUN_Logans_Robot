@@ -53,7 +53,10 @@ void wallstakecontrol() {
                 wallstake.move(0);
                 pros::delay(30);
                 wallstake_sensor.reset_position();
-                target = basePos;
+
+                // Skip PID since we're already at base
+                lastState = currentState;
+                continue;
             } else if (currentState == LOAD) {
                 target = loadPos;
             } else if (currentState == SCORE) {
@@ -61,7 +64,7 @@ void wallstakecontrol() {
             }
 
             wallPID.reset();
-            lemlib::Timer timer(700); // 1.5 sec timeout
+            lemlib::Timer timer(700); // 0.7 sec timeout
 
             while (true) {
                 double error = target - wallstake_sensor.get_position();
@@ -74,10 +77,9 @@ void wallstakecontrol() {
             }
 
             if (target == loadPos) {
-                wallstake.move(10);
-            }
-            else {
-            wallstake.move(0);
+                wallstake.move(10); // slight hold
+            } else {
+                wallstake.move(0);
             }
 
             pros::delay(10); // minimal delay before accepting new input
@@ -87,7 +89,6 @@ void wallstakecontrol() {
         pros::delay(5);
     }
 }
-
 
 
 // Autonomous wallstake control sequence
