@@ -52,10 +52,10 @@ lemlib::ControllerSettings linearController(10, // proportional gain (kP)
                                             0, // integral gain (kI)
                                             3, // derivative gain (kD)
                                             3, // anti windup
-                                            2, // Original: 1  small error range, in inches  
-                                            250, // Original: 100  small error range timeout, in milliseconds
-                                            4, // Original: 3  large error range, in inches
-                                            400, // Original: 200  large error range timeout, in milliseconds
+                                            0.75, // Original: 1  small error range, in inches  
+                                            125, // Original: 100  small error range timeout, in milliseconds
+                                            2, // Original: 3  large error range, in inches
+                                            250, // Original: 200  large error range timeout, in milliseconds
                                             20 // maximum acceleration (slew)
 );
 
@@ -155,10 +155,6 @@ void competition_initialize() {}
 
 //**NO MINIMUM SPEED, doesent allow robot to decelerate to correct heading/position 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 53fd74a816273b2edebe95cfef86e7018ced41e4
 void autonomous() {
     // eye.set_led_pwm(100);
     // pros::Task detectTask(objectDetectionTask);

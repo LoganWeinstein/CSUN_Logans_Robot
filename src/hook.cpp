@@ -3,15 +3,13 @@
 
 void hookauton(int speed) {
     if (speed > 0) {
-        hook.move(speed);  
-    }   
-    if (speed < 0) {
         hook.move(speed);
-    }  
-    if (speed = 0) {
-        hook.move(0); 
+    } else if (speed < 0) {
+        hook.move(speed);
+    } else if (speed == 0) {
+        hook.move(0);
     }
-}  
+}
 
 double hookDirection = 0;
 bool hookRunningUp = false;

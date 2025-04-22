@@ -14,7 +14,7 @@ lemlib::PID wallPID(5, 0, 30);  // Adjust kP, kI, kD as needed
 // Target positions (raw rotation sensor values)
 const int basePos = 0;
 const int loadPos = 2200;
-const int scorePos = 18000;
+const int scorePos = 19250;
 
 void wallstakecontrol() {
     wallstake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
@@ -93,52 +93,51 @@ void wallstakecontrol() {
 // Autonomous wallstake control sequence
 
 void wallstake_lower_to_limit() {
-    wallstake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-    wallstake.move(-100);
-    while (!limitswitch.get_value()) {
-        pros::delay(10);
+    if (!limitswitch.get_value()) {
+        wallstake.move(-100);
+        while (!limitswitch.get_value()) pros::delay(5);
+        wallstake.move(0);
+        pros::delay(50);
+        wallstake_sensor.reset_position();
     }
+    else {
     wallstake.move(0);
     pros::delay(50);
     wallstake_sensor.reset_position();
+    }
 }
 
+double loadPos2 = 2500;
+
 void wallstake_auton() {
-wallstake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-
     wallPID.reset();
-    {
-        lemlib::Timer timeout(2000);
-        while (true) {
-            double error = loadPos - wallstake_sensor.get_position();
-            double voltage = wallPID.update(error);
-            wallstake.move_voltage(voltage);
-            if (std::abs(error) < 5 || timeout.isDone()) break;
-            pros::delay(10);
-        }
-        wallstake.move(10); // Hold at point1
-        pros::delay(700);
+    lemlib::Timer timer1(700);
+    while (true) {
+        double error = loadPos2 - wallstake_sensor.get_position();
+        double voltage = wallPID.update(error);
+        wallstake.move_voltage(voltage);
+        if (std::abs(error) < 5 || timer1.isDone()) break;
+        pros::delay(5);
     }
-
-    // Conveyor outtake
+    wallstake.move(10);
+    pros::delay(400);
     conveyor.move(127);
+    pros::delay(1000);
 
-    // Move to point2 using PID
-    wallPID.reset();
-    {
-        lemlib::Timer timeout(2000);
-        while (true) {
-            double error = scorePos - wallstake_sensor.get_position();
-            double voltage = wallPID.update(error);
-            wallstake.move_voltage(voltage);
-            conveyor.move(-127);
-            pros::delay(75);
-            conveyor.move(0);
-            pros::delay(1000);
-            if (std::abs(error) < 5 || timeout.isDone()) break;
-            pros::delay(10);
-        }
-        wallstake.move(0); // Full hold at point2
+    // Step 3: Move to point2 with simultaneous conveyor jerk
+    lemlib::Timer timer2(700);
+    conveyor.move(-127);
+    pros::delay(75);
+    conveyor.move(0);
+   
+
+    while (true) {
+        double error = scorePos - wallstake_sensor.get_position();
+        double voltage = wallPID.update(error);
+        wallstake.move_voltage(voltage);
+
+        if (std::abs(error) < 5 || timer2.isDone()) break;
+        pros::delay(5);
     }
-
+    wallstake.move(0);
 }

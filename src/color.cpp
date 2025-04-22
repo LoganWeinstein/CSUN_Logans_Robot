@@ -25,12 +25,12 @@ bool detectAndPauseIfRing() {
         int hue = eye.get_hue();
         if ((hue >= 0 && hue <= 25) || (hue >= 150 && hue <= 230)) {
             conveyor.move(0);
-            pros::delay(10);
+            pros::delay(5);
             waitingForDetection = false;
 
             // Background task to reset after delay
             pros::Task([=]() {
-                pros::delay(200);
+                pros::delay(50);
                 waitingForDetection = true;
             });
 
