@@ -153,12 +153,14 @@ void competition_initialize() {}
  * This is an example autonomous routine which demonstrates a lot of the features LemLib has to offer
  */
 
+
+ 
 //**NO MINIMUM SPEED, doesent allow robot to decelerate to correct heading/position 
 
 void autonomous() {
 eye.set_led_pwm(100); //DONT Take Out 
 pros::Task detectTask(objectDetectionTask);
-setColorDetectionEnabled(false);
+setColorDetectionEnabled(false); //*Enable for matches but not for skills 
 
 
 skillsrightNEW();

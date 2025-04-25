@@ -26,7 +26,7 @@ chassis.moveToPoint(0, -48, 3000, {.forwards = true, .maxSpeed = 70,}, true); //
 chassis.waitUntilDone();
 
 while (!detectAndPauseIfRing()) {
-    pros::delay(2); // check every 5ms
+    pros::delay(2); // check every 2ms
 }
 
 chassis.turnToHeading(180, 1000, {.maxSpeed = 110,});
@@ -40,15 +40,15 @@ wallstake_auton();
 hookauton(30);
 conveyorauton(127);
 
-//Get 1st mobile goal 
 chassis.moveToPoint(0, -50, 3000, {.forwards = false, .maxSpeed = 100,}, true);
 chassis.waitUntilDone();
 
+//Get 1st mobile goal ------------------------
 hookauton(40);
 pros::delay(200);
 conveyorauton(127);
 
-chassis.moveToPose(40, -30, -130, 4000, {.forwards = false, .lead = 0.2, .maxSpeed = 70,}); // Add last mintue slew
+chassis.moveToPose(40, -30, -130, 2500, {.forwards = false, .lead = 0.2, .maxSpeed = 90,}); // Add last mintue slew
 pros::delay(500);
 wallstake_lower_to_limit();
 chassis.waitUntilDone();
@@ -60,14 +60,14 @@ hookauton(-127);
 
 pros::delay(150);
 
-//Get middle line of rings
+//Get middle line of rings ---------------------
 chassis.moveToPose(45, 0, 0, 3000, {.forwards = true, .maxSpeed = 127,});
 hookauton(-40);
 chassis.waitUntilDone();
 
-//Get 3 rings
-// chassis.moveToPose(48, -12, 0, 3000, {.forwards = false, .lead = 0.5, .maxSpeed = 127});
-// chassis.waitUntilDone();
+
+chassis.moveToPose(45, -20, 0, 3000, {.forwards = false, .maxSpeed = 127});
+chassis.waitUntilDone();
 
 chassis.moveToPose(26, -26, -110, 3000, {.forwards = true, .lead = 0.5, .maxSpeed = 127});
 chassis.waitUntilDone();
@@ -75,25 +75,27 @@ chassis.waitUntilDone();
 chassis.moveToPose(4, -4, -45, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127,});
 chassis.waitUntilDone();
 
-chassis.moveToPose(4, 8, -30, 3000, {.forwards = true, .lead = 0.05, .maxSpeed = 127,});
+chassis.moveToPose(4, 8, 0, 3000, {.forwards = true, .lead = 0.05, .maxSpeed = 127,});
 chassis.waitUntilDone(); 
 
 //Get two rings and put mobile goal in corner
-chassis.turnToHeading(0, 1000);
-chassis.waitUntil(2);
-chassis.moveToPose(24, -24, -45, 3000, {.forwards = false, .maxSpeed = 127,});
+chassis.moveToPose(10, -10, 0, 3000, {.forwards = false, .lead = 0.1, .maxSpeed = 127,});
+pros::delay(500);
+conveyorauton(-127);
+pros::delay(400);
+conveyorauton(127);
+chassis.waitUntil(9);
+chassis.moveToPose(24, -24, -45, 3000, {.forwards = false, .lead = 0.4, .maxSpeed = 127,});
 chassis.waitUntilDone();
 chassis.turnToHeading(135, 1000);
 chassis.waitUntil(2);
-// chassis.moveToPose(48, -48, 135, 3000, {.forwards = true, .lead = 0.2, .maxSpeed = 127,});
-// chassis.waitUntilDone();
-chassis.moveToPose(59, -62, 135, 3000, {.forwards = true, .lead =0.45, .maxSpeed = 90});
+chassis.moveToPose(56, -59, 135, 3000, {.forwards = true, .lead =0.2, .maxSpeed = 90});
 chassis.waitUntilDone();
 chassis.moveToPose(48, -48, 135, 3000, {.forwards = false, .maxSpeed = 127,});
 chassis.waitUntilDone();
 chassis.turnToHeading(-45, 1000);
 chassis.waitUntil(2);
-chassis.moveToPose(59, -62, -45, 5000, {.forwards = false, .lead = 0.2, .maxSpeed = 127,});
+chassis.moveToPose(56, -59, -45, 5000, {.forwards = false, .lead = 0.2, .maxSpeed = 127,});
 pros::delay(300);
 intakeauton(0); 
 conveyorauton(0);
@@ -107,8 +109,8 @@ conveyorauton(0);
 
 pros::delay(500);
 
-//Drive to middle rings
-chassis.moveToPose(60, 14, 0, 4000, {.forwards = true, .maxSpeed = 127,}, true);
+//Drive to middle rings and get load both (blue and red)
+chassis.moveToPose(53, 16, 0, 4000, {.forwards = true, .maxSpeed = 127,}, true);
 intakeauton(127); 
 conveyorauton(127);
 chassis.waitUntilDone(); //async
@@ -116,6 +118,8 @@ chassis.waitUntilDone(); //async
 while (!detectAndPauseIfRing()) {
     pros::delay(5); // check every 5ms
 }
+
+intakeauton(0);
 
 chassis.moveToPose(60, 0, 0, 3000, {.forwards = false, .maxSpeed = 127,});
 chassis.waitUntilDone();
@@ -127,6 +131,10 @@ wallstake_lower_to_limit();
 
 pros::delay(500);
 
+wallstake_auton(); //Double wallstake 
+
+wallstake_lower_to_limit();
+
 wallstake_auton();
 
 //Go to 2nd mobile goal
@@ -134,5 +142,11 @@ chassis.moveToPose(24, 24, -45, 3000, {.forwards = true, .lead = 0.3, .maxSpeed 
 pros::delay(400);
 wallstake_lower_to_limit();
 chassis.waitUntilDone();
+
+hookauton(-127);
+
+pros::delay(150);
+
+
 
 }
