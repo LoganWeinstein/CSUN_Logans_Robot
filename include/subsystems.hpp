@@ -9,7 +9,7 @@ extern lemlib::Chassis chassis;
 extern pros::Controller controller;
 
 inline pros::Motor intake(7);
-inline pros::MotorGroup conveyor({8,-9}); 
+inline pros::MotorGroup conveyor({9,-10}); 
 inline pros::Motor bullrush(18);
 inline pros::Motor hook(-11);
 inline pros::Motor wallstake(14); 
