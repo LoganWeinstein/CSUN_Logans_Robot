@@ -16,6 +16,10 @@ const int basePos = 0;
 const int loadPos = 2200;
 const int scorePos = 19250;
 
+void wallstake_hold() {
+    wallstake.move_voltage(-200); // Apply small backwards holding voltage (range is from -12000 to 12000 millivolts)
+}
+
 void wallstakecontrol() {
     wallstake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
@@ -54,7 +58,6 @@ void wallstakecontrol() {
                 pros::delay(30);
                 wallstake_sensor.reset_position();
 
-                // Skip PID since we're already at base
                 lastState = currentState;
                 continue;
             } else if (currentState == LOAD) {
@@ -64,7 +67,7 @@ void wallstakecontrol() {
             }
 
             wallPID.reset();
-            lemlib::Timer timer(700); // 0.7 sec timeout
+            lemlib::Timer timer(700);
 
             while (true) {
                 double error = target - wallstake_sensor.get_position();
@@ -73,19 +76,17 @@ void wallstakecontrol() {
 
                 if (std::abs(error) < 5 || timer.isDone()) break;
 
-                pros::delay(5); // faster PID loop
+                pros::delay(5);
             }
 
-            pros::delay(10); // minimal delay before accepting new input
+            pros::delay(10);
+            wallstake_hold(); // Apply hold after reaching
             lastState = currentState;
         }
 
         pros::delay(5);
     }
 }
-
-
-// Autonomous wallstake control sequence
 
 void wallstake_lower_to_limit() {
     if (!limitswitch.get_value()) {
@@ -94,11 +95,10 @@ void wallstake_lower_to_limit() {
         wallstake.move(0);
         pros::delay(50);
         wallstake_sensor.reset_position();
-    }
-    else {
-    wallstake.move(0);
-    pros::delay(50);
-    wallstake_sensor.reset_position();
+    } else {
+        wallstake.move(0);
+        pros::delay(50);
+        wallstake_sensor.reset_position();
     }
 }
 
@@ -114,12 +114,11 @@ void wallstake_auton() {
         if (std::abs(error) < 5 || timer1.isDone()) break;
         pros::delay(5);
     }
-    wallstake.move(10);
+    wallstake_hold();
     pros::delay(400);
     conveyor.move(127);
     pros::delay(1000);
 
-    // Step 3: Move to point2 with simultaneous conveyor jerk
     lemlib::Timer timer2(700);
     conveyor.move(-127);
     pros::delay(75);
@@ -132,16 +131,17 @@ void wallstake_auton() {
         if (std::abs(error) < 5 || timer2.isDone()) break;
         pros::delay(5);
     }
-    wallstake.move(0);
+    wallstake_hold();
 }
+
 // Corner Rings Auton Functions -------------------------------------------------
 double corner_get = 22000;
 double corner_drop = 25000;
 
 void wallstake_cornerget() {
-wallstake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-wallPID.reset();
-lemlib::Timer timer3(700);
+    wallstake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    wallPID.reset();
+    lemlib::Timer timer3(700);
     while (true) {
         double error = corner_get - wallstake_sensor.get_position();
         double voltage = wallPID.update(error);
@@ -150,21 +150,20 @@ lemlib::Timer timer3(700);
         if (std::abs(error) < 5 || timer3.isDone()) break;
         pros::delay(5);
     }
-    wallstake.move(0);
+    wallstake_hold();
 }
 
 void wallstake_cornerdrop() {
     wallstake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     wallPID.reset();
     lemlib::Timer timer4(700);
-        while (true) {
-            double error = corner_drop - wallstake_sensor.get_position();
-            double voltage = wallPID.update(error);
-            wallstake.move_voltage(voltage);
-    
-            if (std::abs(error) < 5 || timer4.isDone()) break;
-            pros::delay(5);
-        }
-        wallstake.move(0);
-    }
+    while (true) {
+        double error = corner_drop - wallstake_sensor.get_position();
+        double voltage = wallPID.update(error);
+        wallstake.move_voltage(voltage);
 
+        if (std::abs(error) < 5 || timer4.isDone()) break;
+        pros::delay(5);
+    }
+    wallstake_hold();
+}

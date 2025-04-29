@@ -1,19 +1,12 @@
 #pragma once
 
 //Custom Autons
-<<<<<<< HEAD
-void skillsright();
-void skillsleft();
-void matchright();
-void matchleft();
-=======
 void skills_right();
 void skills_left();
 void matchred_posright();
 void matchred_poscenter();
 void matchblue_posright();
 void matchblue_posright();
->>>>>>> f8b19ba4b51ecf1d59ccefbacafd3da4e199b54d
 
 
 

@@ -163,14 +163,9 @@ pros::Task detectTask(objectDetectionTask);
 setColorDetectionEnabled(false); //*Enable for matches but not for skills 
 
 
-<<<<<<< HEAD
-skillsright();
-//matchright();
-=======
 skills_right();
 // matchred_posright();
 // matchblue_posright();
->>>>>>> f8b19ba4b51ecf1d59ccefbacafd3da4e199b54d
 
 
 }
