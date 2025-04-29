@@ -9,7 +9,18 @@
 #include "hook.hpp"
 #include "color.hpp"
 
+<<<<<<< HEAD
+
+//ASSET(matchstart2_txt);
+void matchright() {
+
+
+}
+
+void skillsright() {
+=======
 void skills_right() {
+>>>>>>> f8b19ba4b51ecf1d59ccefbacafd3da4e199b54d
 
 chassis.setPose(0, -58.5, 0);
 
