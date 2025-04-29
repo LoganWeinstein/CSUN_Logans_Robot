@@ -45,8 +45,8 @@ bool detectAndPauseIfRing() {
 
 void objectDetectionTask(void* param) {
     while (true) {
-        // Toggle detection with Y button
-        bool yPressedNow = controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y);
+        // Toggle detection with X button
+        bool yPressedNow = controller.get_digital(pros::E_CONTROLLER_DIGITAL_X);
         if (yPressedNow && !yPressedLast) {
             detection_enabled = !detection_enabled;
             setColorDetectionEnabled(detection_enabled);

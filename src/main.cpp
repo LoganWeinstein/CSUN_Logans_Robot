@@ -28,7 +28,7 @@ pros::Imu imu(21);
 pros::Rotation horizontalEnc(17);
 // vertical tracking wheel encoder. Rotation sensor, port 11, reversed 
 pros::Rotation verticalEncLeft(15);
-pros::Rotation verticalEncRight(16);
+// pros::Rotation verticalEncRight(16);
 
 // horizontal tracking wheel. 2.75" diameter, 5.75" offset, back of the robot (negative)
 lemlib::TrackingWheel horizontal(&horizontalEnc, lemlib::Omniwheel::OLD_275, -3.430, 1);
@@ -154,7 +154,7 @@ void competition_initialize() {}
  */
 
 
- 
+
 //**NO MINIMUM SPEED, doesent allow robot to decelerate to correct heading/position 
 
 void autonomous() {
@@ -163,8 +163,9 @@ pros::Task detectTask(objectDetectionTask);
 setColorDetectionEnabled(false); //*Enable for matches but not for skills 
 
 
-skillsrightNEW();
-// skillsright();
+skills_right();
+// matchred_posright();
+// matchblue_posright();
 
 
 }

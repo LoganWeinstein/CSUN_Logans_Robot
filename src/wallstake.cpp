@@ -76,12 +76,6 @@ void wallstakecontrol() {
                 pros::delay(5); // faster PID loop
             }
 
-            if (target == loadPos) {
-                wallstake.move(10); // slight hold
-            } else {
-                wallstake.move(0);
-            }
-
             pros::delay(10); // minimal delay before accepting new input
             lastState = currentState;
         }
@@ -130,8 +124,6 @@ void wallstake_auton() {
     conveyor.move(-127);
     pros::delay(75);
     conveyor.move(0);
-   
-
     while (true) {
         double error = scorePos - wallstake_sensor.get_position();
         double voltage = wallPID.update(error);
@@ -142,3 +134,37 @@ void wallstake_auton() {
     }
     wallstake.move(0);
 }
+// Corner Rings Auton Functions -------------------------------------------------
+double corner_get = 22000;
+double corner_drop = 25000;
+
+void wallstake_cornerget() {
+wallstake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+wallPID.reset();
+lemlib::Timer timer3(700);
+    while (true) {
+        double error = corner_get - wallstake_sensor.get_position();
+        double voltage = wallPID.update(error);
+        wallstake.move_voltage(voltage);
+
+        if (std::abs(error) < 5 || timer3.isDone()) break;
+        pros::delay(5);
+    }
+    wallstake.move(0);
+}
+
+void wallstake_cornerdrop() {
+    wallstake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+    wallPID.reset();
+    lemlib::Timer timer4(700);
+        while (true) {
+            double error = corner_drop - wallstake_sensor.get_position();
+            double voltage = wallPID.update(error);
+            wallstake.move_voltage(voltage);
+    
+            if (std::abs(error) < 5 || timer4.isDone()) break;
+            pros::delay(5);
+        }
+        wallstake.move(0);
+    }
+

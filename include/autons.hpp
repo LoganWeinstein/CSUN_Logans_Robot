@@ -1,11 +1,12 @@
 #pragma once
 
 //Custom Autons
-void skillsright();
-void skillsrightNEW();
-void skillsleftNEW();
-void matchright();
-void matchleft();
+void skills_right();
+void skills_left();
+void matchred_posright();
+void matchred_poscenter();
+void matchblue_posright();
+void matchblue_posright();
 
 
 
