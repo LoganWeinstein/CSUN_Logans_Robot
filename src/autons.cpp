@@ -9,6 +9,7 @@
 #include "hook.hpp"
 #include "color.hpp"
 
+<<<<<<< HEAD
 
 //ASSET(matchstart2_txt);
 void matchright() {
@@ -17,6 +18,9 @@ void matchright() {
 }
 
 void skillsright() {
+=======
+void skills_right() {
+>>>>>>> f8b19ba4b51ecf1d59ccefbacafd3da4e199b54d
 
 chassis.setPose(0, -58.5, 0);
 
@@ -154,3 +158,55 @@ pros::delay(150);
 
 
 }
+
+
+void matchred_posright() {
+chassis.setPose(50, -24, 33);
+
+//Get right mobile goal 
+chassis.moveToPose(38, -16, 33, 4000, {.forwards = true, .lead = 0.05, .maxSpeed = 127,});
+chassis.waitUntil(10);
+bullrushauton();
+chassis.waitUntilDone();
+
+chassis.moveToPose(34.5, -27, 33, 4000, {.forwards = false, .maxSpeed = 127,});
+chassis.waitUntilDone();
+
+chassis.turnToHeading(213, 1000);
+chassis.waitUntilDone();
+
+chassis.moveToPose(38, -16, 213, 3000, {.forwards = false, .maxSpeed = 60,}); 
+chassis.waitUntilDone();
+
+//Get Two rings and corner rings (Color sensor on)
+chassis.moveToPose(48, -24, 90, 3000, {.forwards = true, .maxSpeed = 100,}); 
+chassis.waitUntilDone();
+chassis.moveToPose(48, -48, 180, 3000, {.forwards = true, .maxSpeed = 100,}); 
+chassis.waitUntilDone();
+
+chassis.moveToPose(56, -59, 135, 3000, {.forwards = true, .maxSpeed = 127,}); 
+chassis.waitUntil(40);
+wallstake_cornerget();
+chassis.waitUntilDone();
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+void matchred_poscenter() {
+
+
+
+
+}
+

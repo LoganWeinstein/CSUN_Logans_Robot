@@ -20,20 +20,11 @@ void moveTo(WALLSTAKE_STATE state, int max_error = 20, int timeout = 2000);
 void wallstake_lower_to_limit();
 void wallstake_auton();
 void wallstakecontrol();
+void wallstake_cornerget();
+void wallstake_cornerdrop();
 
 
-// Header file for code #1 
 
-//Driver control functions
-// void wallstakecontrol();
-// void moveToPosition(int target);
-// void hasReachedTarget(int target);
-// void test_rotation_sensor();
-
-
-// Auton functions
-// void wallstake_lower_to_limit();
-// void wallstake_auton();
 
 
 

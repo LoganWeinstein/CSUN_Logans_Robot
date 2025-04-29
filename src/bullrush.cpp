@@ -4,11 +4,13 @@
 
 void bullrushauton() {
     bullrush.move(-127);
-    pros::delay(300); 
+    pros::delay(200); 
     bullrush.move(-30);
     pros::delay(1000);
+    bullrush.move(50);
+    pros::delay(700);
     bullrush.move(0);
-}
+  }
 
 int bullrushTimer1 = 0;
 int bullrushTimer2 = 0;
