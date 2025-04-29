@@ -11,8 +11,12 @@
 
 
 //ASSET(matchstart2_txt);
+void matchright() {
 
-void skillsrightNEW() {
+
+}
+
+void skillsright() {
 
 chassis.setPose(0, -58.5, 0);
 
