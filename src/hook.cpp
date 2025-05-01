@@ -11,6 +11,15 @@ void hookauton(int speed) {
     }
 }
 
+void hookinitilize() {
+    int startTime = pros::millis();
+    while (pros::millis() - startTime < 200) {
+        hook.move(100);
+        pros::delay(10);
+    }
+    hook.move(0);
+}
+
 double hookDirection = 0;
 bool hookRunningUp = false;
 bool hookRunningDown = false;
@@ -44,7 +53,7 @@ void hookcontrol() {
     }
 
     if (hookRunningDown && !hookSlowedDown && pros::millis() - downStartTime >= 500) {
-        hookDirection = -0.1;
+        hookDirection = -0.3;
         hookSlowedDown = true;
     }
 

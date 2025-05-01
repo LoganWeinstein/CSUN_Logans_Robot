@@ -1,4 +1,5 @@
 #pragma once 
 
 void bullrushcontrol();
-void bullrushauton();
+void bullrushup();
+void bullrushdown();

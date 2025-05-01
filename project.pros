@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "Skills RIGHT Lemlib",
+    "project_name": "Red Positive Matches",
     "target": "v5",
     "templates": {
       "LemLib": {
@@ -298,7 +298,8 @@
       }
     },
     "upload_options": {
-      "description": "CSUN Black Skills Code"
+      "description": "CSUN Black Skills Code",
+      "slot": 2
     },
     "use_early_access": false
   }

@@ -117,18 +117,18 @@ void initialize() {
 
     // thread to for brain screen and position logging -------------------------------------
 
-    // pros::Task screenTask([&]() {
-    //     while (true) {
-    //         // print robot location to the brain screen
-    //         pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
-    //         pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
-    //         pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
-    //         // log position telemetry
-    //         lemlib::telemetrySink()->info("Chassis pose: {}", chassis.getPose());
-    //         // delay to save resources
-    //         pros::delay(50);
-    //     }
-    // });
+    pros::Task screenTask([&]() {
+        while (true) {
+            // print robot location to the brain screen
+            pros::lcd::print(2, "X: %f", chassis.getPose().x); // x
+            pros::lcd::print(3, "Y: %f", chassis.getPose().y); // y
+            pros::lcd::print(4, "Theta: %f", chassis.getPose().theta); // heading
+            // log position telemetry
+            lemlib::telemetrySink()->info("Chassis pose: {}", chassis.getPose());
+            // delay to save resources
+            pros::delay(50);
+        }
+    });
 }
 
 /**
@@ -158,15 +158,12 @@ void competition_initialize() {}
 //**NO MINIMUM SPEED, doesent allow robot to decelerate to correct heading/position 
 
 void autonomous() {
-eye.set_led_pwm(100); //DONT Take Out 
-pros::Task detectTask(objectDetectionTask);
-setColorDetectionEnabled(false); //*Enable for matches but not for skills 
 
-
-skills_right();
-// matchred_posright();
-// matchblue_posright();
-
+// skills_right();
+matchred_pos();
+// matchblue_pos();
+// matchred_neg();
+// matchblue_neg();
 
 }
 
@@ -205,17 +202,20 @@ skills_right();
 void opcontrol() {
 pros::lcd::initialize();
 
-//Color sorting --------------------------------
-pros::Task detectTask(objectDetectionTask);
+bool detectRed = false;
+bool detectBlue = true;
+bool wasPressed = false;
 
+//Color sorting --------------------------------
+pros::Task detectionTask(objectDetectionTask, &detectBlue);
+
+hookinitilize(); //Always starts with the hook up 
 
 pros::Task wallstake_task(wallstakecontrol);
 pros::Task bullrush_task(bullrushcontrol);
-   
-bool wasPressed = false;
 
 while (true) {
-    double angle = wallstake_sensor.get_angle();
+    double angle = wallstake_sensor.get_angle(); //Show wallstake angle
     // double corrected = angle / 100;
     pros::lcd::print(0, "Wallstake Angle:");
     pros::lcd::print(1, "%.2f deg", angle);

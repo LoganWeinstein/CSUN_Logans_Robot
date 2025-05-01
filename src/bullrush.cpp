@@ -2,44 +2,52 @@
 #include "subsystems.hpp"
 
 
-void bullrushauton() {
+void bullrushdown() {
     bullrush.move(-127);
     pros::delay(200); 
-    bullrush.move(-30);
-    pros::delay(1000);
-    bullrush.move(50);
-    pros::delay(700);
+    bullrush.move(-70);
+  }
+
+void bullrushup() {
+    bullrush.move(127);
+    pros::delay(200); 
     bullrush.move(0);
   }
 
-int bullrushTimer1 = 0;
-int bullrushTimer2 = 0;
-bool bullrushSpeed = false;
-
-void bullrushcontrol() {
-  while (true) {
-    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
-      bullrush.move(-127);
-      bullrushTimer1 = pros::millis();
-      bullrush.move(-30);
-
-    } else if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
-      bullrush.move(90);
-      bullrushTimer2 = pros::millis();
-      bullrush.move(0);
+  bool bullrushActiveY = false;
+  bool bullrushActiveB = false;
+  int bullrushTimerY = 0;
+  int bullrushTimerB = 0;
+  
+  void bullrushcontrol() {
+    while (true) {
+      if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
+        bullrush.move(-127); // Fast retract
+        bullrushTimerY = pros::millis();
+        bullrushActiveY = true;
+        bullrushActiveB = false;
+      }
+  
+      if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
+        bullrush.move(90); // Extend
+        bullrushTimerB = pros::millis();
+        bullrushActiveB = true;
+        bullrushActiveY = false;
+      }
+  
+      // After 200ms of Y press, switch to slower hold power
+      if (bullrushActiveY && pros::millis() - bullrushTimerY >= 200) {
+        bullrush.move(-70);
+        bullrushActiveY = false;
+      }
+  
+      // After 300ms of B press, stop
+      if (bullrushActiveB && pros::millis() - bullrushTimerB >= 300) {
+        bullrush.move(0);
+        bullrushActiveB = false;
+      }
+  
+      pros::delay(10);
     }
-
-    // Hold at lower speed after 200ms 
-    if (pros::millis() - bullrushTimer1 >= 200) {
-      bullrush.move(0);
-    }
-
-    if (pros::millis() - bullrushTimer2 >= 300) {
-      bullrush.move(0);
-    }
-
-
-    pros::delay(10);
   }
-}
-
+  
