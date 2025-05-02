@@ -1,7 +1,9 @@
 #pragma once
 
-#pragma once
+enum class ColorTarget { RED, BLUE };
 
-void setColorDetectionEnabled(bool enabled);
+extern ColorTarget Red;
+extern ColorTarget Blue;
+
 void objectDetectionTask(void* param);
 bool detectAndPauseIfRing();

@@ -3,14 +3,13 @@
 
 
 void bullrushdown() {
-    bullrush.move(-127);
-    pros::delay(200); 
-    bullrush.move(-70);
+    bullrush.move(-100);
+    
   }
 
 void bullrushup() {
     bullrush.move(127);
-    pros::delay(200); 
+    pros::delay(300); 
     bullrush.move(0);
   }
 

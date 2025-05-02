@@ -160,6 +160,7 @@ void competition_initialize() {}
 void autonomous() {
 
 // skills_right();
+// skills_left();
 matchred_pos();
 // matchblue_pos();
 // matchred_neg();
@@ -202,12 +203,10 @@ matchred_pos();
 void opcontrol() {
 pros::lcd::initialize();
 
-bool detectRed = false;
-bool detectBlue = true;
-bool wasPressed = false;
+bool wasPressed = false; //for wallstake
 
 //Color sorting --------------------------------
-pros::Task detectionTask(objectDetectionTask, &detectBlue);
+pros::Task detectionTask(objectDetectionTask, &Blue);
 
 hookinitilize(); //Always starts with the hook up 
 

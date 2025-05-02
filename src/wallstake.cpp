@@ -153,8 +153,8 @@ void wallstake_auton() {
 }
 
 // Corner Rings Auton Functions -------------------------------------------------
-double corner_get = 30000;
-double corner_drop = 35000; //Adjust values
+double corner_get = 24000;
+double corner_drop = 30000; //Adjust values
 double ladder = 15000;
 
 void wallstake_cornerget() {
