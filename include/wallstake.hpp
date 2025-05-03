@@ -23,6 +23,7 @@ void wallstakecontrol();
 void wallstake_cornerget();
 void wallstake_cornerdrop();
 void wallstake_touch_ladder();
+void wallstake_move_and_hold(double target);
 
 
 

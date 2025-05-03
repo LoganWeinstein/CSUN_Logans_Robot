@@ -3,13 +3,19 @@
 
 
 void bullrushdown() {
-    bullrush.move(-100);
+    bullrush.move(-127);
     
+  }
+
+void bullrushcorner() {
+    bullrush.move(-127);
+    pros::delay(280);
+    bullrush.move(0);
   }
 
 void bullrushup() {
     bullrush.move(127);
-    pros::delay(300); 
+    pros::delay(600); 
     bullrush.move(0);
   }
 
@@ -35,13 +41,13 @@ void bullrushup() {
       }
   
       // After 200ms of Y press, switch to slower hold power
-      if (bullrushActiveY && pros::millis() - bullrushTimerY >= 200) {
+      if (bullrushActiveY && pros::millis() - bullrushTimerY >= 500) {
         bullrush.move(-70);
         bullrushActiveY = false;
       }
   
       // After 300ms of B press, stop
-      if (bullrushActiveB && pros::millis() - bullrushTimerB >= 300) {
+      if (bullrushActiveB && pros::millis() - bullrushTimerB >= 600) {
         bullrush.move(0);
         bullrushActiveB = false;
       }

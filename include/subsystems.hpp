@@ -12,7 +12,7 @@ inline pros::Motor intake(7);
 inline pros::MotorGroup conveyor({9,-10}); 
 inline pros::Motor bullrush(19);
 inline pros::Motor hook(-11);
-inline pros::Motor wallstake(14); 
+inline pros::Motor wallstake(16); 
 
 inline pros::Optical eye(18);
 inline pros::Rotation wallstake_sensor(-12); 

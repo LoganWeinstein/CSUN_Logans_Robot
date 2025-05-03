@@ -19,7 +19,7 @@ Notes
 
 */
 
-
+//Skills ---------------------------------------------------------
 void skills_right() {
 
 chassis.setPose(0, -58.5, 0);
@@ -159,79 +159,95 @@ pros::delay(150);
 
 }
 
+void skills_left() {
 
+
+}
+
+//RED Side ---------------------------------------------------------
 void matchred_pos() {
 //Initialize robot and reset everything
-chassis.setPose(21, -50, 30);
-pros::Task detectionTask(objectDetectionTask, &Blue);
+chassis.setPose(21, -50, 26);
+static pros::Task detectionTask(objectDetectionTask, &Blue);
 
 
-//Get right mobile goal 
-chassis.moveToPose(50, -12.5, 50, 3000, {.forwards = true, .lead = 0.4, .maxSpeed = 127,});
-chassis.waitUntil(26);
-bullrushdown();
-chassis.waitUntil(31.5);
+//Get right mobile goal  
+chassis.moveToPoint(51, -10, 3000, {.forwards = true, .maxSpeed = 127,});
+chassis.waitUntil(25);
+bullrushdown(); //Try switching to red motor for better hold?
+chassis.waitUntil(32.7);
 chassis.cancelMotion();
 
 //Bring mobile goal back 
-chassis.moveToPoint(30, -30, 1500, {.forwards = false, .maxSpeed = 127,});
-chassis.waitUntilDone();
+chassis.moveToPoint(21, -50, 1500, {.forwards = false, .maxSpeed = 127,});
+chassis.waitUntil(25);
+chassis.cancelMotion();
 
 bullrushup();
+hookauton(70); //Hook up 
 
-chassis.turnToHeading(210, 1000);
+chassis.moveToPose(34, -16, 225, 3000, {.forwards = false, .lead = 0.1, .maxSpeed = 60,}); 
 chassis.waitUntilDone();
 
-hookauton(60); //Hook up 
-
-chassis.moveToPoint(38, -15, 3000, {.forwards = false, .maxSpeed = 60,}); 
-chassis.waitUntilDone();
-
-hookauton(-127); //Hook down
+hookauton(-110); //Hook down
 wallstake_lower_to_limit(); 
 pros::delay(750);
 
+//Get Two rings and corner rings (Color sensor on)
+chassis.moveToPose(40, -24, 90, 3000, {.forwards = true, .maxSpeed = 90,}); 
+pros::delay(600);
 intakeauton(127);
 conveyorauton(127);
-
-//Get Two rings and corner rings (Color sensor on)
-chassis.moveToPose(63, -24, 90, 3000, {.forwards = true, .maxSpeed = 60,}); 
-pros::delay(300);
 hookauton(-40);
+chassis.waitUntil(10);
+chassis.cancelMotion();
+
+chassis.moveToPose(53, -16, 45, 3000, {.forwards = true, .maxSpeed = 127,}); 
 chassis.waitUntilDone();
 
-chassis.turnToHeading(0, 1000);
+chassis.moveToPose(62, -13, 50, 3000, {.forwards = true, .lead = 0.6, .maxSpeed = 127,}); 
 chassis.waitUntilDone();
 
-chassis.moveToPose(63, -9.6, 0, 3000, {.forwards = true, .maxSpeed = 127,}); //*Dont go over line
-chassis.waitUntilDone();
-
-chassis.moveToPose(48, -24, 180, 3000, {.forwards = false, .maxSpeed = 127,});
+chassis.moveToPose(48, -24, 180, 1750, {.forwards = false, .maxSpeed = 127,});
 chassis.waitUntilDone();
 
 chassis.turnToHeading(180, 1000);
 chassis.waitUntilDone();
 
-chassis.moveToPose(48, -48, 180, 3000, {.forwards = true, .maxSpeed = 127,}); 
+chassis.moveToPose(46, -60, 185, 3000, {.forwards = true, .maxSpeed = 60,}); 
 chassis.waitUntilDone();
 
-chassis.moveToPose(60, -62, 135, 3000, {.forwards = true, .maxSpeed = 127,});
-    wallstake_cornerget(); 
-    chassis.waitUntil(40);
-    intakeauton(-127);
-    pros::delay(200);
-    intakeauton(-127);
+chassis.moveToPose(48, -48, 180, 3000, {.forwards = false, .maxSpeed = 127,}); 
 chassis.waitUntilDone();
 
-wallstake_cornerdrop();
+intakeauton(-70);
+
+chassis.moveToPose(63, -62, 135, 2000, {.forwards = true, .maxSpeed = 127,});
+chassis.waitUntilDone();
+
+pros::delay(300);
+intakeauton(127);
+pros::delay(1500);
 
 chassis.moveToPose(48, -48, 135, 3000, {.forwards = false, .maxSpeed = 127,}); 
+chassis.waitUntilDone();
+
+bullrushdown();
+
+chassis.moveToPose(58, -57, 135, 2000, {.forwards = true, .maxSpeed = 127,});
+chassis.waitUntilDone();
+
+chassis.turnToHeading(255, 1000);
+chassis.waitUntilDone();
+
+chassis.turnToHeading(135, 1000);
+bullrushup();
 chassis.waitUntilDone();
 
 chassis.turnToHeading(-45, 1000);
 chassis.waitUntilDone();
 
-chassis.moveToPose(56, -59, -45, 3000, {.forwards = false, .maxSpeed = 127,});
+chassis.moveToPose(59, -57, -45, 3000, {.forwards = false, .maxSpeed = 127,});
 chassis.waitUntilDone();
 
 hookauton(100);
@@ -242,7 +258,7 @@ conveyorauton(0);
 
 wallstake_touch_ladder();
 
-chassis.moveToPose(17, -17, -45, 4000, {.forwards = true, .maxSpeed = 127,});
+chassis.moveToPose(17, -17, -45, 2000, {.forwards = true, .maxSpeed = 127,});
 chassis.waitUntilDone();
 
 
@@ -255,28 +271,34 @@ chassis.waitUntilDone();
 
 }
 
-
-
-
 void matchred_neg() {
-chassis.setPose(-21, -50, -30);
-pros::Task detectionTask(objectDetectionTask, &Blue);
-    
-//Get right mobile goal 
-chassis.moveToPose(-50, -12.5, -50, 3000, {.forwards = true, .lead = 0.4, .maxSpeed = 127,});
-chassis.waitUntil(26);
-bullrushdown();
-chassis.waitUntil(31.5);
+//Initialize robot and reset everything
+chassis.setPose(-21, -50, -26);
+static pros::Task detectionTask(objectDetectionTask, &Blue);
+
+
+//Get right mobile goal  
+chassis.moveToPoint(-51, -10, 3000, {.forwards = true, .maxSpeed = 127,});
+chassis.waitUntil(25);
+bullrushdown(); //Try switching to red motor for better hold?
+chassis.waitUntil(32.7);
 chassis.cancelMotion();
 
 //Bring mobile goal back 
-chassis.moveToPoint(-30, -30, 1500, {.forwards = false, .maxSpeed = 127,});
-chassis.waitUntilDone();
+chassis.moveToPoint(-21, -50, 1500, {.forwards = false, .maxSpeed = 127,});
+chassis.waitUntil(25);
+chassis.cancelMotion();
 
 bullrushup();
-hookauton(70);
-  
+hookauton(70); //Hook up 
 
+chassis.moveToPose(-34, -16, -225, 3000, {.forwards = false, .lead = 0.1, .maxSpeed = 60,}); 
+chassis.waitUntilDone();
+
+hookauton(-110); //Hook down
+wallstake_lower_to_limit(); 
+pros::delay(750);
+  
 //Get open mobile goal and score alliance stake
 chassis.moveToPoint(0, -48, 3000, {.forwards = false, .maxSpeed = 60,}); 
 chassis.waitUntilDone();  
@@ -311,14 +333,174 @@ wallstake_lower_to_limit();
 
 
 }   
-    
+
+//BLUE Side ---------------------------------------------------------
 void matchblue_pos() {
+//Initialize robot and reset everything
+chassis.setPose(-21, -50, -26);
+static pros::Task detectionTask(objectDetectionTask, &Blue);
+
+
+//Get right mobile goal  
+chassis.moveToPoint(-51, -10, 3000, {.forwards = true, .maxSpeed = 127,});
+chassis.waitUntil(25);
+bullrushdown(); //Try switching to red motor for better hold?
+chassis.waitUntil(32.7);
+chassis.cancelMotion();
+
+//Bring mobile goal back 
+chassis.moveToPoint(-21, -50, 1500, {.forwards = false, .maxSpeed = 127,});
+chassis.waitUntil(25);
+chassis.cancelMotion();
+
+bullrushup();
+hookauton(70); //Hook up 
+
+chassis.moveToPose(-34, -16, 225, 3000, {.forwards = false, .lead = 0.1, .maxSpeed = 60,}); 
+chassis.waitUntilDone();
+
+hookauton(-110); //Hook down
+wallstake_lower_to_limit(); 
+pros::delay(750);
+
+//Get Two rings and corner rings (Color sensor on)
+chassis.moveToPose(-40, -24, -90, 3000, {.forwards = true, .maxSpeed = 90,}); 
+pros::delay(600);
+intakeauton(127);
+conveyorauton(127);
+hookauton(-40);
+chassis.waitUntil(10);
+chassis.cancelMotion();
+
+chassis.moveToPose(-53, -16, -45, 3000, {.forwards = true, .maxSpeed = 127,}); 
+chassis.waitUntilDone();
+
+chassis.moveToPose(-62, -13, -50, 3000, {.forwards = true, .lead = 0.6, .maxSpeed = 127,}); 
+chassis.waitUntilDone();
+
+chassis.moveToPose(-48, -24, 180, 1750, {.forwards = false, .maxSpeed = 127,});
+chassis.waitUntilDone();
+
+chassis.turnToHeading(180, 1000);
+chassis.waitUntilDone();
+
+chassis.moveToPose(-46, -60, -185, 3000, {.forwards = true, .maxSpeed = 60,}); 
+chassis.waitUntilDone();
+
+chassis.moveToPose(-48, -48, 180, 3000, {.forwards = false, .maxSpeed = 127,}); 
+chassis.waitUntilDone();
+
+intakeauton(-70);
+
+chassis.moveToPose(-63, -62, -135, 2000, {.forwards = true, .maxSpeed = 127,});
+chassis.waitUntilDone();
+
+pros::delay(300);
+intakeauton(127);
+pros::delay(1500);
+
+chassis.moveToPose(-48, -48, -135, 3000, {.forwards = false, .maxSpeed = 127,}); 
+chassis.waitUntilDone();
+
+bullrushdown();
+
+chassis.moveToPose(-58, -57, -135, 2000, {.forwards = true, .maxSpeed = 127,});
+chassis.waitUntilDone();
+
+chassis.turnToHeading(-255, 1000);
+chassis.waitUntilDone();
+
+chassis.turnToHeading(-135, 1000);
+bullrushup();
+chassis.waitUntilDone();
+
+chassis.turnToHeading(45, 1000);
+chassis.waitUntilDone();
+
+chassis.moveToPose(-59, -57, 45, 3000, {.forwards = false, .maxSpeed = 127,});
+chassis.waitUntilDone();
+
+hookauton(100);
+conveyorauton(-100);
+pros::delay(200);
+hookauton(0);
+conveyorauton(0);
+
+wallstake_touch_ladder();
+
+chassis.moveToPose(-17, -17, 45, 2000, {.forwards = true, .maxSpeed = 127,});
+chassis.waitUntilDone();
+
+
+
+
+
+
+
+
+
 
 }  
 
-
-
 void matchblue_neg() {
+//Initialize robot and reset everything
+chassis.setPose(21, -50, 26);
+static pros::Task detectionTask(objectDetectionTask, &Blue);
+
+
+//Get right mobile goal  
+chassis.moveToPoint(51, -10, 3000, {.forwards = true, .maxSpeed = 127,});
+chassis.waitUntil(25);
+bullrushdown(); //Try switching to red motor for better hold?
+chassis.waitUntil(32.7);
+chassis.cancelMotion();
+
+//Bring mobile goal back 
+chassis.moveToPoint(21, -50, 1500, {.forwards = false, .maxSpeed = 127,});
+chassis.waitUntil(25);
+chassis.cancelMotion();
+
+bullrushup();
+hookauton(70); //Hook up 
+
+chassis.moveToPose(34, -16, 225, 3000, {.forwards = false, .lead = 0.1, .maxSpeed = 60,}); 
+chassis.waitUntilDone();
+
+hookauton(-110); //Hook down
+wallstake_lower_to_limit(); 
+pros::delay(750);
+  
+//Get open mobile goal and score alliance stake
+chassis.moveToPoint(0, -48, 3000, {.forwards = false, .maxSpeed = 60,}); 
+chassis.waitUntilDone();  
+
+hookauton(-127);
+wallstake_lower_to_limit(); 
+pros::delay(500);
+
+chassis.turnToHeading(180, 1000);
+chassis.waitUntilDone();
+
+intakeauton(127);
+conveyorauton(127);
+
+while (!detectAndPauseIfRing()) {
+    pros::delay(2); // check every 2ms
+}
+
+chassis.moveToPoint(0, -60, 3000, {.forwards = true, .maxSpeed = 90,}, true); //Async (moves on)
+chassis.waitUntilDone();
+
+chassis.moveToPoint(0, -55, 3000, {.forwards = false, .maxSpeed = 127,}); 
+chassis.waitUntilDone();
+
+wallstake_auton();
+
+wallstake_lower_to_limit(); 
+
+
+
+
 
 }    
     

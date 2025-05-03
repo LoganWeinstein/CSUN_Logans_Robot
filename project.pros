@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "Red Positive Matches",
+    "project_name": "Red Pos Matches ",
     "target": "v5",
     "templates": {
       "LemLib": {

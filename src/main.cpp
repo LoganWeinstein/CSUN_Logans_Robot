@@ -80,17 +80,17 @@ lemlib::OdomSensors sensors(&verticalLeft, // vertical tracking wheel
 );
 
 // input curve for throttle input during driver control
-lemlib::ExpoDriveCurve throttleCurve(5, // joystick deadband out of 127
+lemlib::ExpoDriveCurve throttleCurve(8, // joystick deadband out of 127
                                      12, // minimum output where drivetrain will move out of 127
-                                     1.01 // expo curve gain
+                                     1.005 // expo curve gain
 );
 
 //original joystick values: (3, 10, 1.019)
 
 // input curve for steer input during driver control
-lemlib::ExpoDriveCurve steerCurve(18, // joystick deadband out of 127
+lemlib::ExpoDriveCurve steerCurve(20, // joystick deadband out of 127
                                   12, // minimum output where drivetrain will move out of 127
-                                  1.03 // expo curve gain
+                                  1.01 // expo curve gain
 );
 
 // create the chassis
@@ -161,7 +161,7 @@ void autonomous() {
 
 // skills_right();
 // skills_left();
-matchred_pos();
+matchred_pos(); //Change color sorting to Red
 // matchblue_pos();
 // matchred_neg();
 // matchblue_neg();
@@ -206,7 +206,8 @@ pros::lcd::initialize();
 bool wasPressed = false; //for wallstake
 
 //Color sorting --------------------------------
-pros::Task detectionTask(objectDetectionTask, &Blue);
+pros::Task detectionTask(objectDetectionTask, &Blue); //Change to RED as well 
+
 
 hookinitilize(); //Always starts with the hook up 
 
