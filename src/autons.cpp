@@ -172,7 +172,7 @@ static pros::Task detectionTask(objectDetectionTask, &Blue);
 
 
 //Get right mobile goal  
-chassis.moveToPoint(51, -10, 3000, {.forwards = true, .maxSpeed = 127,});
+chassis.moveToPose(51, -10, 26, 3000, {.forwards = true, .maxSpeed = 127,});
 chassis.waitUntil(25);
 bullrushdown(); //Try switching to red motor for better hold?
 chassis.waitUntil(33);
@@ -278,7 +278,7 @@ static pros::Task detectionTask(objectDetectionTask, &Blue);
 
 //Get right mobile goal  
 // chassis.moveToPoint(-51, -10, 3000, {.forwards = true, .maxSpeed = 127,});
-chassis.moveToPoint(-51, -10, 3000, {.forwards = true, .maxSpeed = 127,});
+chassis.moveToPose(-51, -10, -26, 3000, {.forwards = true, .maxSpeed = 127,});
 chassis.waitUntil(25);
 bullrushdown(); //Try switching to red motor for better hold?
 chassis.waitUntil(32.7);
@@ -334,7 +334,7 @@ static pros::Task detectionTask(objectDetectionTask, &Red);
 
 
 //Get right mobile goal  
-chassis.moveToPoint(-51, -10, 3000, {.forwards = true, .maxSpeed = 127,});
+chassis.moveToPose(-51, -10, -26, 3000, {.forwards = true, .maxSpeed = 127,});
 chassis.waitUntil(25);
 bullrushdown(); //Try switching to red motor for better hold?
 chassis.waitUntil(33);
@@ -445,7 +445,7 @@ static pros::Task detectionTask(objectDetectionTask, &Red);
 
 
 //Get right mobile goal  
-chassis.moveToPoint(51, -10, 3000, {.forwards = true, .maxSpeed = 127,});
+chassis.moveToPose(51, -10, 26, 3000, {.forwards = true, .maxSpeed = 127,});
 chassis.waitUntil(25);
 bullrushdown(); //Try switching to red motor for better hold?
 chassis.waitUntil(33);
