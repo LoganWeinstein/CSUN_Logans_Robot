@@ -3,10 +3,12 @@
 //Custom Autons
 void skills_right();
 void skills_left();
-void matchred_pos();
-void matchblue_pos();
-void matchred_neg();
-void matchblue_neg();
+void match_red_pos();
+void match_red_center();
+void match_red_neg();
+void match_blue_pos();
+void match_blue_center();
+void match_blue_neg();
 
 
 

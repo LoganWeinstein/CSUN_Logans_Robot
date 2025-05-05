@@ -158,13 +158,16 @@ void competition_initialize() {}
 //**NO MINIMUM SPEED, doesent allow robot to decelerate to correct heading/position 
 
 void autonomous() {
+//Change color sorting to Red or Blue in opcontrol
 
 // skills_right();
 // skills_left();
-matchred_pos(); //Change color sorting to Red
-// matchblue_pos();
-// matchred_neg();
-// matchblue_neg();
+// match_red_pos(); 
+// match_red_center(); 
+// match_red_neg();
+// match_blue_pos(); 
+// match_blue_center();  
+match_blue_neg();   
 
 }
 
@@ -206,7 +209,7 @@ pros::lcd::initialize();
 bool wasPressed = false; //for wallstake
 
 //Color sorting --------------------------------
-pros::Task detectionTask(objectDetectionTask, &Blue); //Change to RED as well 
+pros::Task detectionTask(objectDetectionTask, &Red); //Change to RED as well 
 
 
 hookinitilize(); //Always starts with the hook up 

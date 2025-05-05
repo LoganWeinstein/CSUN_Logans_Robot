@@ -26,14 +26,14 @@ void bullrushup() {
   
   void bullrushcontrol() {
     while (true) {
-      if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
+      if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
         bullrush.move(-127); // Fast retract
         bullrushTimerY = pros::millis();
         bullrushActiveY = true;
         bullrushActiveB = false;
       }
   
-      if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
+      if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
         bullrush.move(90); // Extend
         bullrushTimerB = pros::millis();
         bullrushActiveB = true;
