@@ -56,7 +56,7 @@ hookauton(40);
 pros::delay(200);
 conveyorauton(127);
 
-chassis.moveToPose(40, -30, -130, 2500, {.forwards = false, .lead = 0.2, .maxSpeed = 90,}); // Add last mintue slew
+chassis.moveToPose(40, -30, -130, 2500, {.forwards = false, .lead = 0.2, .maxSpeed = 127,}); 
 pros::delay(500);
 wallstake_lower_to_limit();
 chassis.waitUntilDone();
@@ -66,10 +66,10 @@ chassis.waitUntilDone();
 
 hookauton(-127);
 
-pros::delay(150);
+pros::delay(200);
 
 //Get middle line of rings ---------------------
-chassis.moveToPose(45, 0, 0, 3000, {.forwards = true, .maxSpeed = 127,});
+chassis.moveToPose(48, 0, 0, 3000, {.forwards = true, .lead = 0.6, .maxSpeed = 127,});
 hookauton(-40);
 chassis.waitUntilDone();
 
@@ -160,7 +160,69 @@ pros::delay(150);
 }
 
 void skills_left() {
+chassis.setPose(-24, -58.5, 0);
 
+hookauton(40);
+conveyorauton(127);
+
+chassis.moveToPose(-40, -30, 130, 2500, {.forwards = false, .lead = 0.2, .maxSpeed = 127,}); 
+chassis.waitUntil(20);
+chassis.cancelMotion();
+
+chassis.moveToPose(-50, -22, 130, 3000, {.forwards = false, .maxSpeed = 50,});
+chassis.waitUntilDone();
+
+hookauton(-127);
+wallstake_lower_to_limit();
+
+pros::delay(200);
+
+chassis.moveToPose(-48, 0, 0, 3000, {.forwards = true, .lead = 0.6, .maxSpeed = 127,});
+hookauton(-40);
+chassis.waitUntilDone();
+
+chassis.moveToPose(-45, -20, 0, 3000, {.forwards = false, .maxSpeed = 127});
+chassis.waitUntilDone();
+
+chassis.moveToPose(-26, -26, 110, 3000, {.forwards = true, .lead = 0.5, .maxSpeed = 127});
+chassis.waitUntilDone();
+
+chassis.moveToPose(-4, -4, 45, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127,});
+chassis.waitUntilDone();
+
+chassis.moveToPose(-4, 8, 0, 3000, {.forwards = true, .lead = 0.05, .maxSpeed = 127,});
+chassis.waitUntilDone(); 
+
+//Get two rings and put mobile goal in corner
+chassis.moveToPose(10, -10, 0, 3000, {.forwards = false, .lead = 0.1, .maxSpeed = 127,});
+pros::delay(500);
+conveyorauton(-127);
+pros::delay(400);
+conveyorauton(127);
+chassis.waitUntil(9);
+chassis.moveToPose(24, -24, -45, 3000, {.forwards = false, .lead = 0.4, .maxSpeed = 127,});
+chassis.waitUntilDone();
+chassis.turnToHeading(135, 1000);
+chassis.waitUntil(2);
+chassis.moveToPose(56, -59, 135, 3000, {.forwards = true, .lead =0.2, .maxSpeed = 90});
+chassis.waitUntilDone();
+chassis.moveToPose(48, -48, 135, 3000, {.forwards = false, .maxSpeed = 127,});
+chassis.waitUntilDone();
+chassis.turnToHeading(-45, 1000);
+chassis.waitUntil(2);
+chassis.moveToPose(56, -59, -45, 5000, {.forwards = false, .lead = 0.2, .maxSpeed = 127,});
+pros::delay(300);
+intakeauton(0); 
+conveyorauton(0);
+chassis.waitUntilDone();
+
+conveyorauton(-90);
+hookauton(100);
+pros::delay(250);
+hookauton(10);
+conveyorauton(0);
+
+pros::delay(500);
 
 }
 

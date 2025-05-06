@@ -209,7 +209,7 @@ pros::lcd::initialize();
 bool wasPressed = false; //for wallstake
 
 //Color sorting --------------------------------
-pros::Task detectionTask(objectDetectionTask, &Red); //Change to RED as well 
+pros::Task detectionTask(objectDetectionTask, &Blue); //Change to RED as well 
 
 
 hookinitilize(); //Always starts with the hook up 
