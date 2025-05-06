@@ -53,11 +53,7 @@ chassis.waitUntilDone();
 
 //Get 1st mobile goal ------------------------
 
-<<<<<<< HEAD
 chassis.moveToPose(40, -30, -130, 2500, {.forwards = false, .lead = 0.2, .maxSpeed = 127,}); 
-=======
-chassis.moveToPose(38, -30, -130, 2500, {.forwards = false, .lead = 0.2, .maxSpeed = 90,}); // Add last mintue slew
->>>>>>> 4d3b89ed230f0d4a1f18e4ee11598f459fb697a3
 pros::delay(500);
 wallstake_lower_to_limit();
 chassis.waitUntilDone();
@@ -67,20 +63,12 @@ chassis.waitUntilDone();
 
 hookauton(-127);
 
-<<<<<<< HEAD
 pros::delay(200);
-
-//Get middle line of rings ---------------------
-chassis.moveToPose(48, 0, 0, 3000, {.forwards = true, .lead = 0.6, .maxSpeed = 127,});
-hookauton(-40);
-=======
-pros::delay(100);
 
 //Get middle line of rings ---------------------
 
 chassis.moveToPose(48, 0, 0, 3000, {.forwards = true, .lead = 0.6, .maxSpeed = 127,});
 hookauton(-60);
->>>>>>> 4d3b89ed230f0d4a1f18e4ee11598f459fb697a3
 chassis.waitUntilDone();
 
 chassis.moveToPose(48, -24, 0, 3000, {.forwards = false, .lead = 0.1, .maxSpeed = 127});
@@ -196,40 +184,50 @@ wallstake_lower_to_limit();
 
 pros::delay(200);
 
+//Get Center Red Ring
 chassis.moveToPose(-48, 0, 0, 3000, {.forwards = true, .lead = 0.6, .maxSpeed = 127,});
-hookauton(-40);
+hookauton(-60);
 chassis.waitUntilDone();
 
-chassis.moveToPose(-45, -20, 0, 3000, {.forwards = false, .maxSpeed = 127});
+chassis.moveToPose(-48, -24, 0, 3000, {.forwards = false, .lead = 0.1, .maxSpeed = 127});
 chassis.waitUntilDone();
 
-chassis.moveToPose(-26, -26, 110, 3000, {.forwards = true, .lead = 0.5, .maxSpeed = 127});
+chassis.moveToPose(-24, -24, 90, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127});
 chassis.waitUntilDone();
 
-chassis.moveToPose(-4, -4, 45, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127,});
+chassis.turnToHeading(45, 1000);
 chassis.waitUntilDone();
 
-chassis.moveToPose(-4, 8, 0, 3000, {.forwards = true, .lead = 0.05, .maxSpeed = 127,});
+chassis.moveToPose(-6, -6, 45, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127,}, true);
+chassis.waitUntilDone();
+
+while (!detectAndPauseIfRing()) {
+    pros::delay(2); // check every 2ms
+}
+
+chassis.moveToPose(-10, -10, 45, 3000, {.forwards = false, .lead = 0.1, .maxSpeed = 127,});
 chassis.waitUntilDone(); 
 
-//Get two rings and put mobile goal in corner
-chassis.moveToPose(10, -10, 0, 3000, {.forwards = false, .lead = 0.1, .maxSpeed = 127,});
-pros::delay(500);
-conveyorauton(-127);
-pros::delay(400);
+chassis.moveToPose(-6, 1, 30, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127,});
+pros::delay(900);
 conveyorauton(127);
-chassis.waitUntil(9);
-chassis.moveToPose(24, -24, -45, 3000, {.forwards = false, .lead = 0.4, .maxSpeed = 127,});
+chassis.waitUntilDone(); 
+
+pros::delay(300);
+
+//Get two rings and put mobile goal in corner
+chassis.moveToPose(-24, -24, 45, 3000, {.forwards = false, .lead = 0.4, .maxSpeed = 127,});
+conveyorauton(-127);
+chassis.turnToHeading(-135, 1000);
+conveyorauton(127);
 chassis.waitUntilDone();
-chassis.turnToHeading(135, 1000);
-chassis.waitUntil(2);
-chassis.moveToPose(56, -59, 135, 3000, {.forwards = true, .lead =0.2, .maxSpeed = 90});
+chassis.moveToPose(-61, -63, -135, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 80});
 chassis.waitUntilDone();
-chassis.moveToPose(48, -48, 135, 3000, {.forwards = false, .maxSpeed = 127,});
+chassis.moveToPose(-48, -48, -135, 3000, {.forwards = false, .maxSpeed = 127,});
 chassis.waitUntilDone();
-chassis.turnToHeading(-45, 1000);
-chassis.waitUntil(2);
-chassis.moveToPose(56, -59, -45, 5000, {.forwards = false, .lead = 0.2, .maxSpeed = 127,});
+chassis.turnToHeading(45, 1000);
+chassis.waitUntilDone();
+chassis.moveToPose(-61, -63, 45, 1500, {.forwards = false, .lead = 0.1, .maxSpeed = 127,});
 pros::delay(300);
 intakeauton(0); 
 conveyorauton(0);
@@ -237,11 +235,12 @@ chassis.waitUntilDone();
 
 conveyorauton(-90);
 hookauton(100);
-pros::delay(250);
+pros::delay(150);
 hookauton(10);
 conveyorauton(0);
 
 pros::delay(500);
+
 
 }
 
