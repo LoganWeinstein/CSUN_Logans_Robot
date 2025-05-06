@@ -44,12 +44,12 @@ chassis.moveToPose(0, -55, 180, 3000, {.forwards = true, .maxSpeed = 127,}, true
 chassis.waitUntilDone();
 
 wallstake_auton();
-
-hookauton(30);
 conveyorauton(127);
 
 chassis.moveToPoint(0, -50, 3000, {.forwards = false, .maxSpeed = 100,}, true);
 chassis.waitUntilDone();
+
+hookauton(70);
 
 //Get 1st mobile goal ------------------------
 
@@ -80,7 +80,7 @@ chassis.waitUntilDone();
 chassis.turnToHeading(-45, 1000);
 chassis.waitUntilDone();
 
-chassis.moveToPose(6, -6, -45, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127,}, true);
+chassis.moveToPose(4, -4, -45, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127,}, true);
 chassis.waitUntilDone();
 
 while (!detectAndPauseIfRing()) {
@@ -167,7 +167,7 @@ pros::delay(150);
 }
 
 void skills_left() {
-chassis.setPose(-24, -58.5, 0);
+chassis.setPose(-24, -58.5, 180);
 
 hookauton(40);
 conveyorauton(127);
@@ -181,12 +181,13 @@ chassis.waitUntilDone();
 
 hookauton(-127);
 wallstake_lower_to_limit();
+intakeauton(127);
 
 pros::delay(200);
 
 //Get Center Red Ring
 chassis.moveToPose(-48, 0, 0, 3000, {.forwards = true, .lead = 0.6, .maxSpeed = 127,});
-hookauton(-60);
+hookauton(-90);
 chassis.waitUntilDone();
 
 chassis.moveToPose(-48, -24, 0, 3000, {.forwards = false, .lead = 0.1, .maxSpeed = 127});
@@ -198,7 +199,7 @@ chassis.waitUntilDone();
 chassis.turnToHeading(45, 1000);
 chassis.waitUntilDone();
 
-chassis.moveToPose(-6, -6, 45, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127,}, true);
+chassis.moveToPose(-4, -4, 45, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127,}, true);
 chassis.waitUntilDone();
 
 while (!detectAndPauseIfRing()) {
