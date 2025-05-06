@@ -13,7 +13,7 @@ void hookauton(int speed) {
 
 void hookinitilize() {
     int startTime = pros::millis();
-    while (pros::millis() - startTime < 200) {
+    while (pros::millis() - startTime < 125) {
         hook.move(100);
         pros::delay(10);
     }

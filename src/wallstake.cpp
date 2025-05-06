@@ -103,13 +103,13 @@ void wallstake_auton() {
     wallPID.reset();
     lemlib::Timer timer1(700);
     while (true) {
-        double error = 2500 - wallstake_sensor.get_position();
+        double error = 1600 - wallstake_sensor.get_position();
         double voltage = wallPID.update(error);
         wallstake.move_voltage(voltage);
         if (std::abs(error) < 5 || timer1.isDone()) break;
         pros::delay(5);
     }
-    holdTarget = 2500;
+    holdTarget = 1600;
     holdingPosition = true;
     pros::delay(400);
 

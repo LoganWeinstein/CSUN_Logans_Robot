@@ -80,7 +80,7 @@ lemlib::OdomSensors sensors(&verticalLeft, // vertical tracking wheel
 );
 
 // input curve for throttle input during driver control
-lemlib::ExpoDriveCurve throttleCurve(8, // joystick deadband out of 127
+lemlib::ExpoDriveCurve throttleCurve(10, // joystick deadband out of 127
                                      12, // minimum output where drivetrain will move out of 127
                                      1.005 // expo curve gain
 );
@@ -88,7 +88,7 @@ lemlib::ExpoDriveCurve throttleCurve(8, // joystick deadband out of 127
 //original joystick values: (3, 10, 1.019)
 
 // input curve for steer input during driver control
-lemlib::ExpoDriveCurve steerCurve(20, // joystick deadband out of 127
+lemlib::ExpoDriveCurve steerCurve(30, // joystick deadband out of 127
                                   12, // minimum output where drivetrain will move out of 127
                                   1.01 // expo curve gain
 );
@@ -160,14 +160,14 @@ void competition_initialize() {}
 void autonomous() {
 //Change color sorting to Red or Blue in opcontrol
 
-// skills_right();
+skills_right();
 // skills_left();
 // match_red_pos(); 
 // match_red_center(); 
 // match_red_neg();
 // match_blue_pos(); 
 // match_blue_center();  
-match_blue_neg();   
+// match_blue_neg();   
 
 }
 
@@ -209,7 +209,7 @@ pros::lcd::initialize();
 bool wasPressed = false; //for wallstake
 
 //Color sorting --------------------------------
-pros::Task detectionTask(objectDetectionTask, &Red); //Change to RED as well 
+// pros::Task detectionTask(objectDetectionTask, &Blue); //Change to RED as well 
 
 
 hookinitilize(); //Always starts with the hook up 
