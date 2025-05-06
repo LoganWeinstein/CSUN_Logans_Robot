@@ -26,14 +26,14 @@ void bullrushup() {
   
   void bullrushcontrol() {
     while (true) {
-      if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)) {
+      if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)) {
         bullrush.move(-127); // Fast retract
         bullrushTimerY = pros::millis();
         bullrushActiveY = true;
         bullrushActiveB = false;
       }
   
-      if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)) {
+      if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
         bullrush.move(90); // Extend
         bullrushTimerB = pros::millis();
         bullrushActiveB = true;
@@ -41,7 +41,7 @@ void bullrushup() {
       }
   
       // After 200ms of Y press, switch to slower hold power
-      if (bullrushActiveY && pros::millis() - bullrushTimerY >= 500) {
+      if (bullrushActiveY && pros::millis() - bullrushTimerY >= 225) {
         bullrush.move(-70);
         bullrushActiveY = false;
       }
