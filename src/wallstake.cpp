@@ -100,7 +100,9 @@ void wallstakecontrol() {
 
 // --- Autonomous Routines ---
 void wallstake_auton() {
-    wallPID.reset();
+wallPID.reset();
+
+
     lemlib::Timer timer1(700);
     while (true) {
         double error = 1600 - wallstake_sensor.get_position();
@@ -111,15 +113,12 @@ void wallstake_auton() {
     }
     holdTarget = 1600;
     holdingPosition = true;
-    pros::delay(400);
 
     conveyor.move(127);
-    pros::delay(1000);
+    pros::delay(500);
 
     lemlib::Timer timer2(700);
     conveyor.move(-127);
-    pros::delay(75);
-    conveyor.move(0);
 
     while (true) {
         double error = scorePos - wallstake_sensor.get_position();
@@ -130,6 +129,8 @@ void wallstake_auton() {
     }
     holdTarget = scorePos;
     holdingPosition = true;
+
+    conveyor.move(0);
 }
 
 // --- Background PID Task Wrapper ---

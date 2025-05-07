@@ -160,8 +160,8 @@ void competition_initialize() {}
 void autonomous() {
 //Change color sorting to Red or Blue in opcontrol
 
-// skills_right();
-skills_left();
+skills_right();
+// skills_left();
 // match_red_pos(); 
 // match_red_center(); 
 // match_red_neg();

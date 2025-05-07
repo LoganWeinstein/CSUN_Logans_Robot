@@ -53,7 +53,7 @@ void hookcontrol() {
     }
 
     if (hookRunningDown && !hookSlowedDown && pros::millis() - downStartTime >= 500) {
-        hookDirection = -0.3;
+        hookDirection = -0.8;
         hookSlowedDown = true;
     }
 

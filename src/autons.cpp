@@ -74,31 +74,23 @@ chassis.waitUntilDone();
 chassis.moveToPose(48, -24, 0, 3000, {.forwards = false, .lead = 0.1, .maxSpeed = 127});
 chassis.waitUntilDone();
 
-chassis.moveToPose(24, -24, -90, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127});
+chassis.moveToPose(24, -24, -90, 3000, {.forwards = true, .maxSpeed = 127});
 chassis.waitUntilDone();
 
 chassis.turnToHeading(-45, 1000);
 chassis.waitUntilDone();
 
-chassis.moveToPose(4, -4, -45, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127,}, true);
+chassis.moveToPose(3, -3, -30, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127,});
 chassis.waitUntilDone();
 
-while (!detectAndPauseIfRing()) {
-    pros::delay(2); // check every 2ms
-}
-
-chassis.moveToPose(10, -10, -45, 3000, {.forwards = false, .lead = 0.1, .maxSpeed = 127,});
-chassis.waitUntilDone(); 
-
-chassis.moveToPose(6, 1, -30, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127,});
-pros::delay(900);
+chassis.moveToPose(7, 5, 0, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127,});
 conveyorauton(127);
 chassis.waitUntilDone(); 
 
 pros::delay(300);
 
 //Get two rings and put mobile goal in corner
-chassis.moveToPose(24, -24, -45, 3000, {.forwards = false, .lead = 0.4, .maxSpeed = 127,});
+chassis.moveToPose(24, -24, -45, 3000, {.forwards = false, .lead = 0.5, .maxSpeed = 127,});
 conveyorauton(-127);
 chassis.turnToHeading(135, 1000);
 conveyorauton(127);
@@ -121,7 +113,11 @@ pros::delay(150);
 hookauton(10);
 conveyorauton(0);
 
-pros::delay(500);
+chassis.moveToPoint(58, -60, 1000, {.forwards = true, .maxSpeed = 127,});
+chassis.waitUntilDone();
+
+chassis.moveToPoint(61, -63, 1000, {.forwards = false, .maxSpeed = 127,});
+chassis.waitUntilDone();
 
 //Drive to middle rings and get load both (blue and red)
 chassis.moveToPose(60, -10, 0, 3000, {.forwards = true, .maxSpeed = 127,});
