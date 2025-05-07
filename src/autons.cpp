@@ -170,7 +170,7 @@ conveyorauton(127);
 
 chassis.moveToPose(-40, -30, 130, 2500, {.forwards = false, .lead = 0.2, .maxSpeed = 127,}); 
 chassis.waitUntil(20);
-chassis.cancelMotion();
+chassis.cancelMotion(); //has mogo
 
 chassis.moveToPose(-50, -22, 130, 3000, {.forwards = false, .maxSpeed = 50,});
 chassis.waitUntilDone();
@@ -187,45 +187,50 @@ hookauton(-90);
 chassis.waitUntilDone();
 
 chassis.moveToPose(-48, -24, 0, 3000, {.forwards = false, .lead = 0.1, .maxSpeed = 127});
-chassis.waitUntilDone();
+chassis.waitUntilDone(); //aligns ring 2
 
 chassis.moveToPose(-24, -24, 90, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127});
-chassis.waitUntilDone();
+chassis.waitUntilDone(); // heads to ring 2
 
 chassis.turnToHeading(45, 1000);
+chassis.waitUntilDone(); //aligns for center ring
+
+////moves to center of field for rings
+chassis.moveToPose(-7, -2, 30, 3000, {.forwards = true, .lead = 0.05, .maxSpeed = 127,}, true);
 chassis.waitUntilDone();
 
-chassis.moveToPose(-4, -4, 45, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127,}, true);
-chassis.waitUntilDone();
+// while (!detectAndPauseIfRing()) {
+//     pros::delay(2); // check every 2ms
+// }
+//pros::delay(1500); //wait for color sensor to detect ring
 
-while (!detectAndPauseIfRing()) {
-    pros::delay(2); // check every 2ms
-}
+// chassis.moveToPose(-7, -7, 45, 2500, {.forwards = false, .lead = 0.1, .maxSpeed = 127,});
+// chassis.waitUntilDone(); 
 
-chassis.moveToPose(-10, -10, 45, 3000, {.forwards = false, .lead = 0.1, .maxSpeed = 127,});
-chassis.waitUntilDone(); 
-
-chassis.moveToPose(-6, 1, 30, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127,});
-pros::delay(900);
+chassis.moveToPose(-7, 10, 20, 2500, {.forwards = true, .lead = 0.1, .maxSpeed = 127,});
+pros::delay(100);
 conveyorauton(127);
 chassis.waitUntilDone(); 
 
-pros::delay(300);
+pros::delay(1000);
 
 //Get two rings and put mobile goal in corner
-chassis.moveToPose(-24, -24, 45, 3000, {.forwards = false, .lead = 0.4, .maxSpeed = 127,});
+chassis.moveToPose(-24, -28, 45, 3000, {.forwards = false, .lead = 0.4, .maxSpeed = 127,});
 conveyorauton(-127);
-chassis.turnToHeading(-135, 1000);
+chassis.turnToHeading(-135, 1000); //aligns with corner of field
 conveyorauton(127);
 chassis.waitUntilDone();
-chassis.moveToPose(-61, -63, -135, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 80});
+
+chassis.moveToPose(-55, -70, -135, 3000, {.forwards = true, .lead = 0.1, .maxSpeed = 127});
 chassis.waitUntilDone();
-chassis.moveToPose(-48, -48, -135, 3000, {.forwards = false, .maxSpeed = 127,});
+
+chassis.moveToPose(-40, -50, -135, 3000, {.forwards = false, .maxSpeed = 127,});
 chassis.waitUntilDone();
-chassis.turnToHeading(45, 1000);
+
+chassis.turnToHeading(45, 1000); //ailigns mogo to corner
 chassis.waitUntilDone();
-chassis.moveToPose(-61, -63, 45, 1500, {.forwards = false, .lead = 0.1, .maxSpeed = 127,});
-pros::delay(300);
+
+chassis.moveToPose(-50, -60, 41, 1500, {.forwards = false, .lead = 0.1, .maxSpeed = 127,});
 intakeauton(0); 
 conveyorauton(0);
 chassis.waitUntilDone();
@@ -234,10 +239,41 @@ conveyorauton(-90);
 hookauton(100);
 pros::delay(150);
 hookauton(10);
+conveyorauton(-120);
+pros::delay(1000);
 conveyorauton(0);
 
-pros::delay(500);
+chassis.moveToPoint(-50, -60, 700, {.forwards = true, .maxSpeed = 127,});
+chassis.waitUntilDone();
 
+chassis.moveToPoint(-50, -60, 700, {.forwards = true, .maxSpeed = 127,});
+chassis.waitUntilDone();
+
+chassis.moveToPose(-40, -50, 45, 2500, {.forwards = true, .maxSpeed = 127,});
+chassis.waitUntilDone();
+
+chassis.moveToPose(-40, 13, -180, 3000, {.forwards = false, .maxSpeed = 127,});
+chassis.waitUntilDone();
+
+chassis.moveToPose(-30, 25, -135, 3000, {.forwards = false, .maxSpeed = 50,});
+chassis.waitUntilDone();
+
+hookauton(-127);
+pros::delay(150);
+hookauton(-100);
+
+chassis.turnToHeading(-90, 1000); 
+chassis.waitUntilDone();
+conveyorauton(127);
+intakeauton(127); 
+chassis.moveToPose(-53, 15, -90, 3000, {.forwards = true, .maxSpeed = 50,});
+chassis.waitUntilDone();
+
+chassis.moveToPose(-58, 48, 0, 3000, {.forwards = true, .maxSpeed = 50,});
+chassis.waitUntilDone();
+
+chassis.moveToPose(-24, 48, 90, 3000, {.forwards = true, .maxSpeed = 50,});
+chassis.waitUntilDone();
 
 }
 
