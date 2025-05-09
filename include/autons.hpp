@@ -10,6 +10,8 @@ void match_blue_pos();
 void match_blue_center();
 void match_blue_neg();
 
+void test_run();
+
 
 
 // void default_constants();

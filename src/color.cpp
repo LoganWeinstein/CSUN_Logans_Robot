@@ -11,6 +11,9 @@ ColorTarget Blue = ColorTarget::BLUE;
 bool colorDetectionEnabled = true;
 bool xPressedLast = false;
 
+bool ringDetectedAuton = false; 
+
+
 // === Jerk timer control ===
 bool jerk = false;
 uint32_t jerkStartTime = 0;
@@ -25,27 +28,31 @@ bool isBlue(int hue) {
 }
 
 // --- Detect either red or blue in auton ---
-bool detectAndPauseIfRing() {
-    static bool waitingForDetection = true;
-    if (!waitingForDetection) return false;
+bool waitForRingDetection(int timeout) {
+    uint32_t start = pros::millis();
+    bool waitingForClear = false;
 
-    if (eye.get_proximity() > 150) {
+    while ((pros::millis() - start) < timeout) {
+        int prox = eye.get_proximity();
         int hue = eye.get_hue();
-        if (isRed(hue) || isBlue(hue)) {
+
+        bool detected = (prox >= 150);
+
+        if (waitingForClear) {
+            if (!detected) waitingForClear = false;
+        } else if (detected) {
             conveyor.move(0);
-            pros::delay(5);
-            waitingForDetection = false;
-
-            pros::Task([=]() {
-                pros::delay(50);
-                waitingForDetection = true;
-            });
-
+            pros::delay(50);
             return true;
         }
+
+        pros::delay(5);
     }
+
     return false;
 }
+
+
 
 // --- Continuous object detection task ---
 void objectDetectionTask(void* param) {

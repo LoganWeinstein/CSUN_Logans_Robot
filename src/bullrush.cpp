@@ -7,12 +7,6 @@ void bullrushdown() {
     
   }
 
-void bullrushcorner() {
-    bullrush.move(-127);
-    pros::delay(280);
-    bullrush.move(0);
-  }
-
 void bullrushup() {
     bullrush.move(127);
     pros::delay(600); 
@@ -34,7 +28,7 @@ void bullrushup() {
       }
   
       if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)) {
-        bullrush.move(90); // Extend
+        bullrush.move(127); // Extend
         bullrushTimerB = pros::millis();
         bullrushActiveB = true;
         bullrushActiveY = false;
@@ -42,12 +36,12 @@ void bullrushup() {
   
       // After 200ms of Y press, switch to slower hold power
       if (bullrushActiveY && pros::millis() - bullrushTimerY >= 225) {
-        bullrush.move(-70);
+        bullrush.move(-30);
         bullrushActiveY = false;
       }
   
       // After 300ms of B press, stop
-      if (bullrushActiveB && pros::millis() - bullrushTimerB >= 600) {
+      if (bullrushActiveB && pros::millis() - bullrushTimerB >= 500) {
         bullrush.move(0);
         bullrushActiveB = false;
       }

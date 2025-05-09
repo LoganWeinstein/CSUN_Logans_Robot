@@ -80,15 +80,15 @@ lemlib::OdomSensors sensors(&verticalLeft, // vertical tracking wheel
 );
 
 // input curve for throttle input during driver control
-lemlib::ExpoDriveCurve throttleCurve(10, // joystick deadband out of 127
+lemlib::ExpoDriveCurve throttleCurve(15, // joystick deadband out of 127
                                      12, // minimum output where drivetrain will move out of 127
-                                     1.005 // expo curve gain
+                                     1.025 // expo curve gain
 );
 
 //original joystick values: (3, 10, 1.019)
 
 // input curve for steer input during driver control
-lemlib::ExpoDriveCurve steerCurve(30, // joystick deadband out of 127
+lemlib::ExpoDriveCurve steerCurve(15, // joystick deadband out of 127
                                   12, // minimum output where drivetrain will move out of 127
                                   1.01 // expo curve gain
 );
@@ -118,19 +118,56 @@ void initialize() {
     // thread to for brain screen and position logging -------------------------------------
 
     pros::Task screenTask([&]() {
+        const double wheelDiameter = 2.75;
+        const double degToInches = (M_PI * wheelDiameter) / 360.0; // ~0.02399
+    
+        // Store initial encoder values
+        double startVertical = verticalEncLeft.get_position();
+        double startHorizontal = horizontalEnc.get_position();
+    
         while (true) {
-            // print robot location to the brain screen
-            pros::lcd::print(2, "X: %f", chassis.getPose().x); // x
-            pros::lcd::print(3, "Y: %f", chassis.getPose().y); // y
-            pros::lcd::print(4, "Theta: %f", chassis.getPose().theta); // heading
-            // log position telemetry
-            lemlib::telemetrySink()->info("Chassis pose: {}", chassis.getPose());
-            // delay to save resources
+            // Get current raw encoder values
+            double currentVertical = verticalEncLeft.get_position();
+            double currentHorizontal = horizontalEnc.get_position();
+    
+            // Compute delta in degrees
+            double deltaVerticalDeg = currentVertical - startVertical;
+            double deltaHorizontalDeg = currentHorizontal - startHorizontal;
+    
+            // Convert to inches
+            double verticalInches = deltaVerticalDeg * degToInches;
+            double horizontalInches = deltaHorizontalDeg * degToInches;
+    
+            // Display converted values
+            pros::lcd::print(0, "Vert: %.2f in", verticalInches);
+            pros::lcd::print(1, "Horiz: %.2f in", horizontalInches);
+    
+            // Odometry Pose
+            auto pose = chassis.getPose();
+            pros::lcd::print(2, "X: %.2f", pose.x);
+            pros::lcd::print(3, "Y: %.2f", pose.y);
+            pros::lcd::print(4, "Theta: %.2f", pose.theta);
+    
             pros::delay(50);
         }
     });
+    
+//         
+// 
+// 
+// while (true) {
+//             // print robot location to the brain screen
+//             pros::lcd::print(2, "X: %f", chassis.getPose().x); // x
+//             pros::lcd::print(3, "Y: %f", chassis.getPose().y); // y
+//             pros::lcd::print(4, "Theta: %f", chassis.getPose().theta); // heading
+//             // log position telemetry
+//             lemlib::telemetrySink()->info("Chassis pose: {}", chassis.getPose());
+//             // delay to save resources
+//             pros::delay(50);
+//         }
+//     });
+// }
 }
-
 /**
  * Runs while the robot is disabled
  */
@@ -169,6 +206,8 @@ skills_right();
 // match_blue_center();  
 // match_blue_neg();   
 
+// test_run();
+
 }
 
 
@@ -206,7 +245,7 @@ skills_right();
 void opcontrol() {
 pros::lcd::initialize();
 
-bool wasPressed = false; //for wallstake
+// bool wasPressed = false; //for wallstake
 
 //Color sorting --------------------------------
 // pros::Task detectionTask(objectDetectionTask, &Blue); //Change to RED as well 
@@ -218,17 +257,17 @@ pros::Task wallstake_task(wallstakecontrol);
 pros::Task bullrush_task(bullrushcontrol);
 
 while (true) {
-    double angle = wallstake_sensor.get_angle(); //Show wallstake angle
-    // double corrected = angle / 100;
-    pros::lcd::print(0, "Wallstake Angle:");
-    pros::lcd::print(1, "%.2f deg", angle);
+    // double angle = wallstake_sensor.get_angle(); //Show wallstake angle
+    // // double corrected = angle / 100;
+    // pros::lcd::print(0, "Wallstake Angle:");
+    // pros::lcd::print(1, "%.2f deg", angle);
 
-    bool pressed = !limitswitch.get_value();
-        if (pressed && !wasPressed) {
-            wallstake_sensor.reset_position();
-            pros::lcd::print(2, "Limit Hit -> Reset");
-        }
-        wasPressed = pressed;
+    // bool pressed = !limitswitch.get_value();
+    //     if (pressed && !wasPressed) {
+    //         wallstake_sensor.reset_position();
+    //         pros::lcd::print(2, "Limit Hit -> Reset");
+    //     }
+    //     wasPressed = pressed;
 
 
         int leftY = controller.get_analog(pros::E_CONTROLLER_ANALOG_LEFT_Y);

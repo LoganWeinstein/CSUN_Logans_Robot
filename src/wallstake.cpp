@@ -11,7 +11,7 @@ lemlib::PID wallPID(5, 0, 30);  // kP, kI, kD
 
 // --- Target Positions ---
 const double basePos = 0;
-const double loadPos = 1100;
+const double loadPos = 2200;
 const double scorePos = 19250;
 const double corner_get = 24000;
 const double corner_drop = 30000;
@@ -27,7 +27,7 @@ bool holdingPosition = false;
 void wallstake_lower_to_limit() {
     wallstake.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     if (!limitswitch.get_value()) {
-        wallstake.move(-100);
+        wallstake.move(-70);
         while (!limitswitch.get_value()) pros::delay(5);
         wallstake.move(0);
         pros::delay(50);
@@ -100,9 +100,7 @@ void wallstakecontrol() {
 
 // --- Autonomous Routines ---
 void wallstake_auton() {
-wallPID.reset();
-
-
+    wallPID.reset();
     lemlib::Timer timer1(700);
     while (true) {
         double error = 1600 - wallstake_sensor.get_position();
@@ -113,12 +111,15 @@ wallPID.reset();
     }
     holdTarget = 1600;
     holdingPosition = true;
+    pros::delay(400);
 
     conveyor.move(127);
-    pros::delay(500);
+    pros::delay(1000);
 
     lemlib::Timer timer2(700);
     conveyor.move(-127);
+    pros::delay(75);
+    conveyor.move(0);
 
     while (true) {
         double error = scorePos - wallstake_sensor.get_position();
@@ -129,8 +130,6 @@ wallPID.reset();
     }
     holdTarget = scorePos;
     holdingPosition = true;
-
-    conveyor.move(0);
 }
 
 // --- Background PID Task Wrapper ---
